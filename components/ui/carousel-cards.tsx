@@ -18,7 +18,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardFooter } from "@/components/ui/card";
 
-interface ExperienceItem {
+export interface ExperienceItem {
   id: string;
   title: string;
   image: string;
@@ -29,9 +29,11 @@ interface ExperienceItem {
   reviewCount?: number;
   badge?: string;
   date?: string;
+  /** Where the card links to. Default "#". */
+  href?: string;
 }
 
-interface ExperienceGridProps {
+export interface ExperienceGridProps {
   title: string;
   items: ExperienceItem[];
   viewAllHref?: string;
@@ -308,12 +310,14 @@ const ExperienceSection = ({
               <ChevronRight className="h-4 w-4" />
               <span className="sr-only">Scroll right</span>
             </Button>
-            <Link
-              className="ml-1 hidden font-medium text-xs hover:underline md:block"
-              href="#"
-            >
-              Show all
-            </Link>
+            {viewAllHref && (
+              <Link
+                className="ml-1 hidden font-medium text-xs hover:underline md:block"
+                href={viewAllHref}
+              >
+                Show all
+              </Link>
+            )}
           </div>
         </div>
 
@@ -332,7 +336,7 @@ const ExperienceSection = ({
             >
               <Link
                 className="block rounded-xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2"
-                href="#"
+                href={item.href ?? "#"}
               >
                 <ExperienceCard experience={item} />
               </Link>
@@ -344,19 +348,26 @@ const ExperienceSection = ({
   );
 };
 
-export default function CarouselCards() {
+export interface CarouselCardsProps {
+  /** One horizontal rail per section. Defaults to two sample rails. */
+  sections?: ExperienceGridProps[];
+  className?: string;
+}
+
+const DEFAULT_SECTIONS: ExperienceGridProps[] = [
+  { items: sampleExperiences, title: "Airbnb Originals ›", viewAllHref: "#" },
+  { items: popularExperiences, title: "Popular experiences in Paris", viewAllHref: "#" },
+];
+
+export default function CarouselCards({
+  sections = DEFAULT_SECTIONS,
+  className = "",
+}: CarouselCardsProps = {}) {
   return (
-    <div className="mt-4 w-full space-y-4">
-      <ExperienceSection
-        items={sampleExperiences}
-        title="Airbnb Originals ›"
-        viewAllHref="#"
-      />
-      <ExperienceSection
-        items={popularExperiences}
-        title="Popular experiences in Paris"
-        viewAllHref="#"
-      />
+    <div className={`mt-4 w-full space-y-4 ${className}`}>
+      {sections.map((section) => (
+        <ExperienceSection key={section.title} {...section} />
+      ))}
     </div>
   );
 }

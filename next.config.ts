@@ -5,6 +5,14 @@ const nextConfig: NextConfig = {
   cacheComponents: true,
   partialPrefetching: true,
   devIndicators: false,
+  // lib/source.ts reads these at render time to show and copy the real files.
+  outputFileTracingIncludes: {
+    "/**": ["./21st-prompts/**", "./components/**", "./lib/**", "./app/globals.css"],
+  },
+  experimental: {
+    // Two root layouts (RTL site, LTR previews) need a global 404.
+    globalNotFound: true,
+  },
   images: {
     remotePatterns: [
       { protocol: "https", hostname: "cdn.21st.dev", pathname: "/**" },

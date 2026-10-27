@@ -9,10 +9,22 @@ import {
   useSpring,
   useMotionValueEvent,
 } from "motion/react";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
+
+export type PanoramicImage = { src: string; alt?: string };
+
+export type PanoramicSpreadHeroProps = {
+  /** Cards of the arch, in order. Works best with 6–10 images. */
+  images?: PanoramicImage[];
+  /** Small uppercase line above the title. */
+  eyebrow?: string;
+  title?: string;
+  description?: string;
+  className?: string;
+};
 
 // Fresh, guaranteed working high-quality Unsplash images (Architecture & Minimalist theme)
-const IMAGES = [
+export const DEFAULT_IMAGES: PanoramicImage[] = [
   { src: "https://cdn.21st.dev/assets/mirror/67/678d13ab2f51cc194ee7109f41e5c4b74a33f143dde876368a93b748a5bdb2f6.jpg", alt: "Modern House" },
   { src: "https://cdn.21st.dev/assets/mirror/48/48db070b82ddcf8b658c59af85c75da59a27c6e58a5f00516c5f04e2bb56bfcc.jpg", alt: "Minimal Interior" },
   { src: "https://cdn.21st.dev/assets/mirror/cb/cb94e95db92613e6820992054bd69aacd17bb6d19975d7074e3a0918a2e58ffa.jpg", alt: "Skyscraper" },
@@ -24,11 +36,11 @@ const IMAGES = [
 ];
 
 // Calculate a sweeping 3D arch around the center point for both mobile and desktop
-const generatePanoramicCards = () => {
-  const total = IMAGES.length;
+const generatePanoramicCards = (images: PanoramicImage[]) => {
+  const total = images.length;
   const centerIndex = (total - 1) / 2;
 
-  return IMAGES.map((item, i) => {
+  return images.map((item, i) => {
     const offset = i - centerIndex;
     const absOffset = Math.abs(offset);
     const zIndex = Math.round(10 - absOffset);
@@ -55,7 +67,6 @@ const generatePanoramicCards = () => {
   });
 };
 
-const CARDS = generatePanoramicCards();
 
 // Optimized physics to remove scroll jitter (higher damping, zero bounce)
 const PROGRESS_SPRING = { stiffness: 80, damping: 25, mass: 0.5, restDelta: 0.001 };
@@ -141,7 +152,14 @@ function GalleryCard({ card, progress, isSpreadActive, isMobile }: any) {
   );
 }
 
-export default function PanoramicSpreadHero() {
+export default function PanoramicSpreadHero({
+  images = DEFAULT_IMAGES,
+  eyebrow = "Exhibition",
+  title = "Curated Space.",
+  description = "Scroll to unspool the collection. Leveraging 3D spatial transforms to bend the digital layout dynamically around the viewer.",
+  className = "",
+}: PanoramicSpreadHeroProps = {}) {
+  const cards = useMemo(() => generatePanoramicCards(images), [images]);
   const wrapRef = useRef<HTMLDivElement>(null);
   const reduce = useReducedMotion();
   const [isMobile, setIsMobile] = useState(false);
@@ -175,7 +193,7 @@ export default function PanoramicSpreadHero() {
   return (
     <section 
       ref={wrapRef} 
-      className="relative w-full h-[400vh] bg-neutral-50 text-neutral-900 dark:bg-neutral-950 dark:text-white transition-colors duration-500"
+      className={`relative w-full h-[400vh] ${className} bg-neutral-50 text-neutral-900 dark:bg-neutral-950 dark:text-white transition-colors duration-500`}
     >
       <div
         className="sticky top-0 h-[100svh] w-full overflow-hidden flex items-center justify-center"
@@ -191,7 +209,7 @@ export default function PanoramicSpreadHero() {
           className="absolute inset-0 z-10 flex items-center justify-center"
           style={{ rotateX: tiltX, rotateY: tiltY, transformStyle: "preserve-3d" }}
         >
-          {CARDS.map((card, i) => (
+          {cards.map((card, i) => (
             <GalleryCard
               key={i}
               card={card}
@@ -208,14 +226,13 @@ export default function PanoramicSpreadHero() {
           style={{ y: textY, scale: textScale, opacity: textOpacity }}
         >
           <span className="text-xs md:text-[0.9vw] uppercase tracking-[0.4em] font-semibold text-neutral-500 dark:text-neutral-400 mb-4">
-            Exhibition
+            {eyebrow}
           </span>
           <h2 className="text-5xl md:text-[5.5vw] font-serif leading-none tracking-tight">
-            Curated Space.
+            {title}
           </h2>
           <p className="mt-6 max-w-[45ch] text-sm md:text-[1.1vw] font-light leading-relaxed opacity-70">
-            Scroll to unspool the collection. Leveraging 3D spatial transforms to
-            bend the digital layout dynamically around the viewer.
+            {description}
           </p>
         </motion.div>
       </div>

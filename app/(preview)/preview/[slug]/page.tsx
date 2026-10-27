@@ -2,16 +2,16 @@ import { Suspense } from "react";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import DemoView from "@/components/demo-view";
-import { PROMPTS } from "@/lib/prompts";
+import { COMPONENTS, getComponent } from "@/lib/registry";
 
-export const metadata: Metadata = { title: "Preview · 21st Prompt Gallery" };
+export const metadata: Metadata = { title: "Preview" };
 
 export function generateStaticParams() {
-  return PROMPTS.map(({ slug }) => ({ slug }));
+  return COMPONENTS.map(({ slug }) => ({ slug }));
 }
 
 function Preview({ slug }: { slug: string }) {
-  if (!PROMPTS.some((p) => p.slug === slug)) notFound();
+  if (!getComponent(slug)) notFound();
   return <DemoView slug={slug} />;
 }
 
