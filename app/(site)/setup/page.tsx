@@ -23,6 +23,18 @@ const TSCONFIG = `{
   }
 }`;
 
+const FONT = `import { Vazirmatn } from "next/font/google";
+
+const vazirmatn = Vazirmatn({ subsets: ["arabic", "latin"] });
+
+export default function RootLayout({ children }: { children: React.ReactNode }) {
+  return (
+    <html lang="fa" dir="rtl" className={vazirmatn.className}>
+      <body>{children}</body>
+    </html>
+  );
+}`;
+
 const SHADCN = `npx shadcn@latest init
 npx shadcn@latest add button card badge slider`;
 
@@ -60,6 +72,18 @@ export default function SetupPage() {
         <>
           <CodeBlock code="npm install clsx tailwind-merge" lang="bash" title="terminal" />
           <CodeBlock code={readSource("lib/utils.ts")} lang="ts" title="lib/utils.ts" />
+        </>
+      ),
+    },
+    {
+      title: "فونت فارسی را بارگذاری کنید",
+      body: (
+        <>
+          <p className="leading-8 text-muted-foreground">
+            کامپوننت‌ها فارسی و راست‌به‌چپ هستند و فونتشان <Path>Vazirmatn</Path> است (در نبودش Tahoma). در Next.js آن را با{" "}
+            <Path>next/font/google</Path> بارگذاری کنید و به <Path>html</Path> جهت و زبان فارسی بدهید:
+          </p>
+          <CodeBlock code={FONT} title="app/layout.tsx" />
         </>
       ),
     },

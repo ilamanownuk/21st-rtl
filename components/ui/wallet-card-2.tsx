@@ -5,13 +5,13 @@ import { Button } from "@/components/ui/button"
 import { Wallet, TrendingUp, Eye, RefreshCw, ArrowDown, ArrowUp, ArrowLeftRight, Clock, Bitcoin } from "lucide-react"
 
 export type WalletCardProps = {
-  /** Balance of the pink "Funding" account. */
+  /** Balance of the pink "تأمین وجه" account. */
   fundingBalance?: string
-  /** Balance of the purple "Unified Trading" account. */
+  /** Balance of the purple "معاملات" account. */
   tradingBalance?: string
   /** The large total in the middle. */
   totalBalance?: string
-  /** Line under the total, e.g. the total in BTC. */
+  /** Line under the total, e.g. the total in bitcoin. */
   cryptoBalance?: string
   onDeposit?: () => void
   onWithdraw?: () => void
@@ -22,10 +22,10 @@ export type WalletCardProps = {
 }
 
 export default function WalletCard({
-  fundingBalance = "$243,940.03",
-  tradingBalance = "$310,495.50",
-  totalBalance = "$534,435.53",
-  cryptoBalance = "9.300554 BTC",
+  fundingBalance = "۲۴۳٬۹۴۰٫۰۳ دلار",
+  tradingBalance = "۳۱۰٬۴۹۵٫۵۰ دلار",
+  totalBalance = "۵۳۴٬۴۳۵٫۵۳ دلار",
+  cryptoBalance = "۹٫۳۰۰۵۵۴ بیت‌کوین",
   onDeposit,
   onWithdraw,
   onTransfer,
@@ -34,7 +34,7 @@ export default function WalletCard({
   className = "",
 }: WalletCardProps = {}) {
   return (
-    <div className={`max-w-md mx-auto ${className}`}>
+    <div dir="rtl" lang="fa" className={`max-w-md mx-auto ${className}`}>
       <Card className="p-6 bg-white border border-gray-200 shadow-xl rounded-3xl">
         <div className="space-y-6">
           <div className="space-y-3">
@@ -44,7 +44,7 @@ export default function WalletCard({
                   <div className="w-8 h-8 bg-black/10 rounded-lg flex items-center justify-center">
                     <Wallet className="w-4 h-4 text-gray-700" />
                   </div>
-                  <span className="font-medium text-gray-800">Funding</span>
+                  <span className="font-medium text-gray-800">تأمین وجه</span>
                 </div>
                 <span className="font-semibold text-gray-800">{fundingBalance}</span>
               </div>
@@ -56,7 +56,7 @@ export default function WalletCard({
                   <div className="w-8 h-8 bg-black/10 rounded-lg flex items-center justify-center">
                     <TrendingUp className="w-4 h-4 text-gray-700" />
                   </div>
-                  <span className="font-medium text-gray-800">Unified Trading</span>
+                  <span className="font-medium text-gray-800">معاملات</span>
                 </div>
                 <span className="font-semibold text-gray-800">{tradingBalance}</span>
               </div>
@@ -69,10 +69,10 @@ export default function WalletCard({
                 <div className="w-6 h-6 bg-gray-100 rounded-full flex items-center justify-center">
                   <div className="w-3 h-3 bg-gray-400 rounded-full" />
                 </div>
-                <span className="text-gray-600 font-medium">Total Balance</span>
+                <span className="text-gray-600 font-medium">موجودی کل</span>
                 <Eye className="w-4 h-4 text-gray-400" />
               </div>
-              <button type="button" onClick={onRefresh} aria-label="Refresh" className="rounded-md">
+              <button type="button" onClick={onRefresh} aria-label="به‌روزرسانی" className="rounded-md">
                 <RefreshCw className="w-5 h-5 text-gray-400" />
               </button>
             </div>
@@ -89,7 +89,7 @@ export default function WalletCard({
           <div className="flex gap-3">
             <Button onClick={onDeposit} className="flex-1 bg-pink-500 hover:bg-pink-600 text-white rounded-2xl h-12 gap-2 border border-pink-600">
               <ArrowDown className="w-4 h-4" />
-              Deposit
+              واریز
             </Button>
             <Button
               onClick={onWithdraw}
@@ -97,11 +97,11 @@ export default function WalletCard({
               className="flex-1 bg-gray-200 hover:bg-gray-300 text-gray-700 rounded-2xl h-12 gap-2 border border-gray-300"
             >
               <ArrowUp className="w-4 h-4" />
-              Withdraw
+              برداشت
             </Button>
             <Button
               onClick={onTransfer}
-              aria-label="Transfer"
+              aria-label="انتقال"
               variant="secondary"
               size="icon"
               className="w-12 h-12 rounded-2xl bg-gray-200 hover:bg-gray-300 border border-gray-300"
@@ -110,7 +110,7 @@ export default function WalletCard({
             </Button>
             <Button
               onClick={onHistory}
-              aria-label="History"
+              aria-label="تاریخچه"
               variant="secondary"
               size="icon"
               className="w-12 h-12 rounded-2xl bg-gray-200 hover:bg-gray-300 border border-gray-300"
@@ -125,8 +125,8 @@ export default function WalletCard({
                 <Wallet className="w-6 h-6 text-pink-600" />
               </div>
               <div className="flex-1">
-                <h3 className="font-semibold text-gray-900">Funding Account</h3>
-                <p className="text-sm text-gray-500">Manage your funding account</p>
+                <h3 className="font-semibold text-gray-900">حساب تأمین وجه</h3>
+                <p className="text-sm text-gray-500">مدیریت حساب تأمین وجه</p>
               </div>
             </div>
 
@@ -135,8 +135,8 @@ export default function WalletCard({
                 <TrendingUp className="w-6 h-6 text-purple-600" />
               </div>
               <div className="flex-1">
-                <h3 className="font-semibold text-gray-900">Unified Trading Account</h3>
-                <p className="text-sm text-gray-500">Manage your trading account</p>
+                <h3 className="font-semibold text-gray-900">حساب معاملات یکپارچه</h3>
+                <p className="text-sm text-gray-500">مدیریت حساب معاملات</p>
               </div>
             </div>
           </div>

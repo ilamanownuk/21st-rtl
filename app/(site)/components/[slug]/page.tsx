@@ -7,6 +7,7 @@ import CodeBlock from "@/components/site/code-block";
 import CopyButton from "@/components/site/copy-button";
 import PropsTable from "@/components/site/props-table";
 import { COMPONENTS, getComponent, installCommand, type ComponentDoc } from "@/lib/registry";
+import { buildPrompt } from "@/lib/prompt";
 import { readPrompt, readSource, sourceUrl } from "@/lib/source";
 
 export function generateStaticParams() {
@@ -60,10 +61,11 @@ const Path = ({ children }: { children: string }) => (
 );
 
 function ComponentDocs({ doc }: { doc: ComponentDoc }) {
-  const prompt = readPrompt(doc);
+  const prompt = buildPrompt(doc);
+  const original = readPrompt(doc);
   const code = readSource(doc.file);
   const demo = readSource(`components/demos/${doc.slug}.tsx`);
-  const source = sourceUrl(prompt);
+  const source = sourceUrl(original);
   const install = installCommand(doc);
   const index = COMPONENTS.indexOf(doc);
   const next = COMPONENTS[(index + 1) % COMPONENTS.length];
@@ -221,9 +223,18 @@ function ComponentDocs({ doc }: { doc: ComponentDoc }) {
 
           <Section id="prompt" title="پرامپت">
             <p className="mb-4 leading-8 text-muted-foreground">
-              این متن را به دستیار هوش مصنوعی‌تان بدهید تا کامپوننت را با همه‌ی وابستگی‌هایش در پروژه نصب کند.
+              این متن را به دستیار هوش مصنوعی‌تان بدهید تا نسخه‌ی فارسی و راست‌به‌چپ همین کامپوننت را با همه‌ی وابستگی‌هایش
+              در پروژه نصب کند.
             </p>
-            <CodeBlock code={prompt} lang="markdown" title={`21st-prompts/${doc.promptFile}`} collapseAt={320} />
+            <CodeBlock code={prompt} lang="markdown" title="prompt.md" collapseAt={320} />
+            <div className="mt-4 flex flex-wrap items-center gap-3 rounded-xl border border-dashed p-4 text-sm">
+              <span className="flex-1 leading-7 text-muted-foreground">
+                پرامپت اصلی <span dir="ltr">21st.dev</span> (انگلیسی و چپ‌به‌راست) هم در دسترس است.
+              </span>
+              <CopyButton src={`/raw/${doc.slug}/original`} size="sm" label={`کپی پرامپت اصلی ${doc.nameFa}`}>
+                کپی پرامپت اصلی
+              </CopyButton>
+            </div>
           </Section>
 
           <Link

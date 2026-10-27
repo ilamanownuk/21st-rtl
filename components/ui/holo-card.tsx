@@ -39,7 +39,7 @@ export type HoloCardProps = {
 };
 
 const INK = "#1d1d1f";
-const FONT = "Geist, -apple-system, BlinkMacSystemFont, Inter, 'Segoe UI', Roboto, sans-serif";
+const FONT = "Vazirmatn, Tahoma, Geist, -apple-system, BlinkMacSystemFont, Inter, 'Segoe UI', Roboto, sans-serif";
 const MONO = "'Geist Mono', ui-monospace, 'SF Mono', Menlo, monospace";
 
 const GRAIN =
@@ -73,7 +73,7 @@ const CSS = `
 .hc-chip:before,.hc-chip:after{content:"";position:absolute;border:1px solid rgba(80,60,20,.45)}
 .hc-chip:before{left:30%;right:30%;top:-1px;bottom:-1px;border-top:0;border-bottom:0}
 .hc-chip:after{top:35%;bottom:35%;left:-1px;right:-1px;border-left:0;border-right:0}
-.hc-label{display:block;font-size:10px;font-weight:500;letter-spacing:.12em;text-transform:uppercase;color:rgba(29,29,31,.45);margin-bottom:4px}
+.hc-label{display:block;font-size:10px;font-weight:500;color:rgba(29,29,31,.45);margin-bottom:4px}
 `;
 
 const Layers = () => (
@@ -105,11 +105,11 @@ function useScramble() {
 
 export const HoloCard = React.forwardRef<HoloCardHandle, HoloCardProps>(function HoloCard(
   {
-    holder = "Alex Morgan",
-    number = "4716 0381 9254 4242",
+    holder = "سارا احمدی",
+    number = "6037 9918 2540 4242",
     expires = "09/29",
     cvv = "731",
-    tier = "Titanium",
+    tier = "تیتانیوم",
     logo,
     network,
     maxTilt = 14,
@@ -296,18 +296,18 @@ export const HoloCard = React.forwardRef<HoloCardHandle, HoloCardProps>(function
       <span className="grid h-[22px] w-[22px] place-items-center rounded-[7px]" style={{ background: INK }}>
         <span className="h-2 w-2 rotate-45 rounded-[2px] bg-white" />
       </span>
-      Logo
+      لوگو
     </span>
   );
   const defaultNetwork = (
     <span className="flex" aria-hidden="true">
       <span className="h-[30px] w-[30px] rounded-full" style={{ background: "rgba(29,29,31,.85)" }} />
-      <span className="-ml-3 h-[30px] w-[30px] rounded-full" style={{ background: "rgba(29,29,31,.35)" }} />
+      <span className="-ms-3 h-[30px] w-[30px] rounded-full" style={{ background: "rgba(29,29,31,.35)" }} />
     </span>
   );
 
   return (
-    <div className={`relative w-full max-w-[380px] ${className}`} style={{ fontFamily: FONT, WebkitFontSmoothing: "antialiased" }}>
+    <div dir="rtl" lang="fa" className={`relative w-full max-w-[380px] ${className}`} style={{ fontFamily: FONT, WebkitFontSmoothing: "antialiased" }}>
       <style>{CSS}</style>
       <div
         ref={stageRef}
@@ -331,7 +331,7 @@ export const HoloCard = React.forwardRef<HoloCardHandle, HoloCardProps>(function
           ref={cardRef}
           role="group"
           aria-roledescription="card"
-          aria-label={`${tier} card ending ${groups[3]}, ${side === "front" ? "front" : "back"} side. Drag to spin, tap to flip.`}
+          aria-label={`کارت ${tier} با چهار رقم پایانی ${groups[3]}، ${side === "front" ? "روی کارت" : "پشت کارت"}. برای چرخاندن بکشید و برای برگرداندن لمس کنید.`}
           className="absolute inset-0 cursor-grab active:cursor-grabbing"
           style={{ transformStyle: "preserve-3d", willChange: "transform", ["--foil" as string]: String(foil) }}
         >
@@ -341,7 +341,7 @@ export const HoloCard = React.forwardRef<HoloCardHandle, HoloCardProps>(function
             <div className="absolute inset-0 flex flex-col justify-between px-6 pb-5 pt-[22px]">
               <div className="flex items-center justify-between">
                 {logo ?? defaultLogo}
-                <span className="text-[11px] font-medium uppercase tracking-[.12em]" style={{ color: "rgba(29,29,31,.5)" }}>
+                <span className="text-[12px] font-medium" style={{ color: "rgba(29,29,31,.5)" }}>
                   {tier}
                 </span>
               </div>
@@ -355,7 +355,8 @@ export const HoloCard = React.forwardRef<HoloCardHandle, HoloCardProps>(function
                 type="button"
                 data-hc-tap
                 onClick={() => reveal()}
-                aria-label={shown ? "Hide card number" : "Show card number"}
+                dir="ltr"
+                aria-label={shown ? "پنهان کردن شماره‌ی کارت" : "نمایش شماره‌ی کارت"}
                 className="flex w-fit gap-3.5 rounded-md text-left text-[20px] font-medium leading-none tabular-nums tracking-[.06em] outline-none focus-visible:ring-2 focus-visible:ring-[#007AFF] focus-visible:ring-offset-4"
                 style={{ fontFamily: MONO, color: INK, textShadow: "0 1px 0 rgba(255,255,255,.8)" }}
               >
@@ -367,12 +368,12 @@ export const HoloCard = React.forwardRef<HoloCardHandle, HoloCardProps>(function
               </button>
               <div className="flex items-end justify-between">
                 <div className="min-w-0">
-                  <span className="hc-label">Card holder</span>
-                  <b className="block truncate text-[15px] font-semibold uppercase tracking-[-0.01em]">{holder}</b>
+                  <span className="hc-label">دارنده‌ی کارت</span>
+                  <b className="block truncate text-[15px] font-semibold">{holder}</b>
                 </div>
                 <div>
-                  <span className="hc-label">Expires</span>
-                  <b className="text-[15px] font-semibold tracking-[-0.01em] tabular-nums">{expires}</b>
+                  <span className="hc-label">انقضا</span>
+                  <b dir="ltr" className="block text-[15px] font-semibold tracking-[-0.01em] tabular-nums">{expires}</b>
                 </div>
                 {network ?? defaultNetwork}
               </div>
@@ -393,19 +394,19 @@ export const HoloCard = React.forwardRef<HoloCardHandle, HoloCardProps>(function
                 if (next) scramble(cvvRef.current, cvv, 380);
                 else if (cvvRef.current) cvvRef.current.textContent = "•••";
               }}
-              aria-label={cvvShown ? "Hide security code" : "Show security code"}
+              aria-label={cvvShown ? "پنهان کردن کد امنیتی" : "نمایش کد امنیتی"}
               className="absolute left-6 right-6 top-[86px] flex h-[38px] items-center justify-end gap-2.5 rounded-lg px-3 outline-none focus-visible:ring-2 focus-visible:ring-[#007AFF]"
               style={{ background: "rgba(255,255,255,.75)", boxShadow: "inset 0 0 0 .5px rgba(0,0,0,.08)" }}
             >
-              <span className="text-[10px] font-medium uppercase tracking-[.12em]" style={{ color: "rgba(29,29,31,.45)" }}>
-                CVV
+              <span className="text-[11px] font-medium" style={{ color: "rgba(29,29,31,.45)" }}>
+                CVV2
               </span>
-              <span ref={cvvRef} className="text-[15px] font-medium tracking-[.12em]" style={{ fontFamily: MONO, color: INK }}>
+              <span ref={cvvRef} dir="ltr" className="text-[15px] font-medium tracking-[.12em]" style={{ fontFamily: MONO, color: INK }}>
                 •••
               </span>
             </button>
             <div className="absolute bottom-[18px] left-6 right-6 text-[10px] leading-[14px]" style={{ color: "rgba(29,29,31,.45)" }}>
-              Tilt to see the foil, drag to spin, tap the code to reveal it.
+              کارت را کج کنید تا هولوگرام را ببینید، بکشید تا بچرخد و روی کد بزنید تا نمایش داده شود.
             </div>
             <div className="hc-layer hc-edge" />
           </div>

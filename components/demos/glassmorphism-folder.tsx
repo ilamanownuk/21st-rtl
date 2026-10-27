@@ -10,6 +10,7 @@ import GlassFolder from "@/components/ui/glass-folder-cards"
 export default function GlassFolderCardsDemo() {
   return (
     <div
+      dir="rtl"
       className="relative flex w-full flex-col items-center justify-center overflow-hidden bg-background px-6 py-16"
       style={{ minHeight: "100svh" }}
     >
@@ -22,24 +23,24 @@ export default function GlassFolderCardsDemo() {
         }}
       />
       <div className="relative grid max-w-[1180px] grid-cols-1 items-end justify-items-center gap-x-14 gap-y-10 md:grid-cols-2 xl:grid-cols-3">
-        <GlassFolder label="My Files" art="aurora" seed={3} appearDelay={0} />
+        <GlassFolder label="فایل‌های من" art="aurora" seed={3} appearDelay={0} />
         <GlassFolder
-          label="Archives"
+          label="بایگانی"
           art="none"
           action="more"
           labelPlacement="top-left"
           appearDelay={140}
           files={[
-            { name: "Lookbook 2024", meta: "38 images", art: "dusk" },
-            { name: "Invoices", meta: "12 PDFs" },
-            { name: "Shoot — Lisbon", meta: "RAW · 2.1 GB", art: "ember" },
-            { name: "Contract.pdf", meta: "PDF · 320 KB" },
+            { name: "لوک‌بوک ۱۴۰۳", meta: "۳۸ تصویر", art: "dusk" },
+            { name: "فاکتورها", meta: "۱۲ فایل PDF" },
+            { name: "عکاسی — کیش", meta: "RAW · ۲٫۱ گیگابایت", art: "ember" },
+            { name: "قرارداد", meta: "PDF · ۳۲۰ کیلوبایت" },
           ]}
-          menu={[{ label: "Rename" }, { label: "Share…" }, { label: "Move to Trash", danger: true }]}
+          menu={[{ label: "تغییر نام" }, { label: "اشتراک‌گذاری…" }, { label: "انتقال به سطل زباله", danger: true }]}
         />
         <GlassFolder
-          label="My Files"
-          meta="Wed 19 Aug"
+          label="فایل‌های من"
+          meta="چهارشنبه ۲۹ مرداد"
           tone="dark"
           art="ember"
           seed={11}
@@ -47,14 +48,14 @@ export default function GlassFolderCardsDemo() {
           labelPlacement="top-right"
           appearDelay={280}
           files={[
-            { name: "Stills", meta: "64 images", art: "verdant" },
-            { name: "Edit notes", meta: "TXT · 4 KB" },
-            { name: "Grade v3", meta: "DRX · 18 MB", art: "aurora" },
+            { name: "عکس‌های صحنه", meta: "۶۴ تصویر", art: "verdant" },
+            { name: "یادداشت‌های تدوین", meta: "TXT · ۴ کیلوبایت" },
+            { name: "اصلاح رنگ نسخه‌ی ۳", meta: "DRX · ۱۸ مگابایت", art: "aurora" },
           ]}
         />
       </div>
-      <p className="relative mt-14 font-mono text-[11px] tracking-[0.18em] text-muted-foreground uppercase">
-        Hover to lean · Click to open · + to add
+      <p className="relative mt-14 text-xs text-muted-foreground">
+        نشانگر را ببرید تا خم شود · کلیک کنید تا باز شود · با + فایل اضافه کنید
       </p>
     </div>
   )

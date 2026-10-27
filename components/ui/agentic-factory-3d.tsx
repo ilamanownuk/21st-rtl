@@ -76,6 +76,8 @@ export default function AgenticFactory3D({
   return (
     <div
       ref={rootRef}
+      dir="rtl"
+      lang="fa"
       className={['agentic-factory-3d', embed && 'embed', className].filter(Boolean).join(' ')}
       style={{ height }}
     >
@@ -83,7 +85,7 @@ export default function AgenticFactory3D({
       <div
         id="scene"
         role="img"
-        aria-label="Interactive 3D machine with five stations: Engine, Admin, Storefront, Cabinet and Checkout. Drag to rotate, scroll or pinch to zoom. Hover or tap a station to take a closer look."
+        aria-label="ماشین سه‌بعدی تعاملی با پنج ایستگاه: موتور، مدیریت، ویترین، پنل مشتری و صندوق. برای چرخاندن بکشید و برای بزرگ‌نمایی اسکرول کنید یا دو انگشت را باز و بسته کنید. برای دیدن جزئیات هر ایستگاه، نشانگر را روی آن ببرید یا لمسش کنید."
       />
       <div className="vignette" />
       <header className="topbar debug-ui">
@@ -100,20 +102,20 @@ export default function AgenticFactory3D({
             </svg>
           </div>
           <div>
-            <strong>Agentic Factory</strong>
-            <small>Interactive workshop</small>
+            <strong>کارخانه‌ی عامل‌ها</strong>
+            <small>کارگاه تعاملی</small>
           </div>
         </div>
         <div className="status" id="status">
           <i />
-          <span id="status-text">Machine running</span>
-          <span>SERIES 001</span>
+          <span id="status-text">ماشین در حال کار</span>
+          <span>سری ۰۰۱</span>
         </div>
       </header>
       <div className="scene-heading debug-ui">
-        The machine you will build <span className="index">5 MODULES / 1 SYSTEM</span>
+        ماشینی که می‌سازید <span className="index">۵ ماژول / ۱ سیستم</span>
       </div>
-      <div className="coordinates debug-ui">PROTOTYPE 01 — FROM IDEA TO PAYMENT</div>
+      <div className="coordinates debug-ui">نمونه‌ی ۰۱ — از ایده تا پرداخت</div>
       <div id="journey" className="debug-ui">
         <div className="journey-icon">
           <svg width="13" height="13" viewBox="0 0 16 16" fill="none">
@@ -121,8 +123,8 @@ export default function AgenticFactory3D({
           </svg>
         </div>
         <div>
-          <strong id="journey-title">New order</strong>
-          <small id="journey-detail">Cabinet · an order from Anna</small>
+          <strong id="journey-title">سفارش جدید</strong>
+          <small id="journey-detail">پنل مشتری · سفارشی از سارا</small>
         </div>
         <div className="track">
           <i id="journey-progress" />
@@ -134,7 +136,7 @@ export default function AgenticFactory3D({
         <p />
       </div>
       <div className="controls debug-ui">
-        <nav className="mode-bar" aria-label="Machine mode">
+        <nav className="mode-bar" aria-label="حالت ماشین">
           <button data-mode="assembled" aria-pressed="true">
             <svg viewBox="0 0 16 16" fill="none">
               <path
@@ -143,7 +145,7 @@ export default function AgenticFactory3D({
                 strokeLinejoin="round"
               />
             </svg>
-            Assembled
+            سرهم
           </button>
           <button data-mode="cutaway" aria-pressed="false">
             <svg viewBox="0 0 16 16" fill="none">
@@ -153,7 +155,7 @@ export default function AgenticFactory3D({
                 strokeLinejoin="round"
               />
             </svg>
-            Cutaway
+            برش
           </button>
           <button data-mode="stations" aria-pressed="false">
             <svg viewBox="0 0 16 16" fill="none">
@@ -164,34 +166,34 @@ export default function AgenticFactory3D({
                 strokeLinejoin="round"
               />
             </svg>
-            Stations
+            ایستگاه‌ها
           </button>
           <button data-mode="order" aria-pressed="false">
             <svg viewBox="0 0 16 16" fill="none">
               <path d="M5 2.5l8 5.5-8 5.5v-11z" stroke="currentColor" strokeLinejoin="round" />
             </svg>
-            One order
+            یک سفارش
           </button>
         </nav>
-        <nav className="camera-row" aria-label="Camera">
-          <span className="caption">VIEW</span>
+        <nav className="camera-row" aria-label="دوربین">
+          <span className="caption">نما</span>
           <button data-camera="overview" aria-pressed="true">
-            Overview
+            کلی
           </button>
           <button data-camera="side" aria-pressed="false">
-            Side
+            کنار
           </button>
           <button data-camera="top" aria-pressed="false">
-            Top
+            بالا
           </button>
           <button data-camera="station" aria-pressed="false">
-            Station
+            ایستگاه
           </button>
           <button data-camera="flight" aria-pressed="false">
-            Flight
+            پرواز
           </button>
           <span className="divider" />
-          <button id="play" aria-label="Pause the animation" aria-pressed="false">
+          <button id="play" aria-label="توقف انیمیشن" aria-pressed="false">
             <svg width="12" height="12" viewBox="0 0 12 12" fill="currentColor">
               <rect x="2" y="1" width="2.5" height="10" rx=".5" />
               <rect x="7.5" y="1" width="2.5" height="10" rx=".5" />
@@ -201,25 +203,25 @@ export default function AgenticFactory3D({
       </div>
       <footer className="footer">
         <a className="wordmark" href="https://vibecoding.tech" target="_blank" rel="noopener">
-          made with AI agents · <span>vibecoding.tech</span>
+          ساخته‌شده با عامل‌های هوش مصنوعی · <span>vibecoding.tech</span>
         </a>
-        <span className="footer-center debug-ui">DESIGNED BY YOU</span>
+        <span className="footer-center debug-ui">طراحی‌شده توسط شما</span>
         <span className="hint debug-ui">
           <svg width="13" height="16" viewBox="0 0 13 16" fill="none">
             <rect x="2" y="1" width="9" height="14" rx="4.5" stroke="currentColor" />
             <path d="M6.5 4v3" stroke="currentColor" strokeLinecap="round" />
           </svg>
-          Rotate. Zoom. Explore.
+          بچرخانید. بزرگ کنید. کاوش کنید.
         </span>
       </footer>
       <div id="loading">
         <i />
-        <span>Assembling your machine</span>
+        <span>در حال سرهم کردن ماشین</span>
       </div>
       <div id="error" role="alert">
-        <strong>Could not start the 3D scene</strong>
-        <p>Check that WebGL is turned on in your browser.</p>
-        <button onClick={() => location.reload()}>Try again</button>
+        <strong>صحنه‌ی سه‌بعدی اجرا نشد</strong>
+        <p>بررسی کنید WebGL در مرورگرتان فعال باشد.</p>
+        <button onClick={() => location.reload()}>تلاش دوباره</button>
       </div>
     </div>
   )
@@ -261,6 +263,16 @@ export type MachineSceneOptions = {
   embedded: boolean
   onStation?: (id: StationId) => void
   onReady?: () => void
+}
+
+const faDigits = (s: string) => s.replace(/\d/g, (d) => '۰۱۲۳۴۵۶۷۸۹'[Number(d)])
+
+const OUTPUT_LABELS: Record<string, string> = {
+  script: 'فیلم‌نامه',
+  video: 'ویدیو',
+  post: 'انتشار',
+  order: 'سفارش',
+  payment: 'پرداخت',
 }
 
 function initMachineScene(
@@ -308,7 +320,7 @@ function initMachineScene(
       })
     } catch (e) {
       showError(
-        'WebGL is not available. Turn on hardware acceleration in your browser settings and reload the page.'
+        'WebGL در دسترس نیست. شتاب سخت‌افزاری را در تنظیمات مرورگر روشن کنید و صفحه را دوباره بارگذاری کنید.'
       )
       throw e
     }
@@ -498,7 +510,12 @@ function initMachineScene(
     ) {
       ctx.fillStyle = color
       ctx.font = `${weight} ${size}px ${fontFamily}`
+      const rtl = /[\u0600-\u06FF]/.test(txt)
+      const align = ctx.textAlign
+      ctx.direction = rtl ? 'rtl' : 'ltr'
+      if (rtl && (align === 'start' || align === 'left')) ctx.textAlign = 'left'
       ctx.fillText(txt, x, y)
+      ctx.textAlign = align
     }
     function screenMaterial(texture: THREE.Texture) {
       return new THREE.MeshBasicMaterial({ map: texture, toneMapped: false })
@@ -569,10 +586,10 @@ function initMachineScene(
       c.strokeStyle = '#4d545c'
       c.lineWidth = 2
       c.strokeRect(2, 2, w - 4, h - 4)
-      print(c, 'STARTER', 45, 79, 40, '#d9d8cd', 650)
-      print(c, '·  site  ·  database  ·  admin in 35 minutes', 285, 79, 34, '#b8bdc1', 450)
-      print(c, 'AGENTIC ENGINEERING    /    YOUR FIRST PRODUCT', 47, 133, 19, '#737e88', 500)
-      print(c, 'No. 001', 1360, 130, 23, '#c57e45')
+      print(c, 'استارتر', 45, 79, 40, '#d9d8cd', 650)
+      print(c, '·  سایت  ·  پایگاه داده  ·  پنل مدیریت در ۳۵ دقیقه', 285, 79, 34, '#b8bdc1', 450)
+      print(c, 'مهندسی عامل‌محور    /    اولین محصول شما', 47, 133, 19, '#737e88', 500)
+      print(c, 'شماره‌ی ۰۰۱', 1330, 130, 23, '#c57e45')
     })
     const plate = screen(machine, 7.35, 0.84, -0.4, 0.25, 3.51, engraving)
     plate.rotation.x = -Math.PI / 2
@@ -630,43 +647,43 @@ function initMachineScene(
     const definitions: StationDef[] = [
       {
         id: 'engine',
-        name: 'Engine',
+        name: 'موتور',
         step: 2,
         output: 'script',
         pos: [-4.15, 0.29, -0.65],
-        desc: 'Script, voice, subtitles, and a finished video.',
+        desc: 'فیلم‌نامه، صدا، زیرنویس و ویدیوی نهایی.',
       },
       {
         id: 'admin',
-        name: 'Admin',
+        name: 'مدیریت',
         step: 3,
         output: 'video',
         pos: [-1.65, 0.29, -2.03],
-        desc: 'The video queue and control over the whole system.',
+        desc: 'صف ویدیوها و کنترل کل سیستم.',
       },
       {
         id: 'storefront',
-        name: 'Storefront',
+        name: 'ویترین',
         step: 4,
         output: 'post',
         pos: [1.5, 0.29, -2.08],
-        desc: 'The finished video becomes part of the product.',
+        desc: 'ویدیوی آماده بخشی از محصول می‌شود.',
       },
       {
         id: 'cabinet',
-        name: 'Cabinet',
+        name: 'پنل مشتری',
         step: 1,
         output: 'order',
         pos: [4.03, 0.29, 0.12],
-        desc: 'Customers, new orders and the work history.',
+        desc: 'مشتری‌ها، سفارش‌های جدید و سابقه‌ی کارها.',
       },
       {
         id: 'cashdesk',
-        name: 'Checkout',
+        name: 'صندوق',
         step: 5,
         output: 'payment',
         pos: [0.93, 0.29, 1.85],
-        desc: 'Payment received. Receipt printed. The machine runs.',
+        desc: 'پرداخت انجام شد. رسید چاپ شد. ماشین کار می‌کند.',
       },
     ]
     const stations: Station[] = [],
@@ -741,13 +758,13 @@ function initMachineScene(
       const plaque = canvasTexture(512, 116, (c, w, h) => {
         c.fillStyle = '#151a20'
         c.fillRect(0, 0, w, h)
-        print(c, String(i + 1).padStart(2, '0'), 24, 76, 42, '#ff7a1a', 550)
+        print(c, faDigits(String(i + 1).padStart(2, '0')), 24, 76, 42, '#ff7a1a', 550)
         print(c, d.name.toUpperCase(), 111, 73, 35, '#d7d9d7', 550)
       })
       screen(group, 1.54, 0.345, 0, 0.27, 0.891, plaque)
       const label = document.createElement('div')
       label.className = 'station-label'
-      label.innerHTML = `<div class="stem"></div><div class="label-card"><div class="label-title"><span>${String(i + 1).padStart(2, '0')}</span>${d.name}</div><div class="label-meta">Step ${d.step} · ${d.output}</div></div>`
+      label.innerHTML = `<div class="stem"></div><div class="label-card"><div class="label-title"><span>${faDigits(String(i + 1).padStart(2, '0'))}</span>${d.name}</div><div class="label-meta">مرحله‌ی ${faDigits(String(d.step))} · ${OUTPUT_LABELS[d.output] ?? d.output}</div></div>`
       $('labels').appendChild(label)
       cleanups.push(() => label.remove())
 
@@ -850,13 +867,13 @@ function initMachineScene(
         c.ellipse(194, 270, 90 - i * 21, 111, Math.sin(t * 0.25) * 0.3 + 0.4, 0, TAU)
         c.stroke()
       }
-      print(c, 'MADE', 28, 57, 24, '#242320', 650)
-      print(c, 'BY YOU.', 24, 103, 42, '#242320', 700)
+      print(c, 'ساخت', 28, 57, 24, '#242320', 650)
+      print(c, 'شما.', 24, 103, 42, '#242320', 700)
       c.fillStyle = '#171b20'
       c.beginPath()
       c.roundRect(25, 465, 334, 123, 12)
       c.fill()
-      const texts = ['From an idea —', 'to a real product.', 'Your agent', 'is already at work.']
+      const texts = ['از یک ایده —', 'تا یک محصول واقعی.', 'عامل شما', 'همین حالا مشغول کار است.']
       const n = Math.floor(t * 0.7) % 4
       print(c, texts[n], 45, 505, 25, '#f4f1ea', 550)
       print(c, texts[(n + 1) % 4], 45, 547, 25, '#f4f1ea', 550)
@@ -890,8 +907,8 @@ function initMachineScene(
       const c = queue.ctx
       c.fillStyle = '#111b20'
       c.fillRect(0, 0, 640, 340)
-      print(c, 'VIDEO QUEUE', 25, 45, 21, '#acb9b8', 550)
-      print(c, '03 / 08', 497, 45, 20, '#ff7a1a', 500)
+      print(c, 'صف ویدیو', 25, 45, 21, '#acb9b8', 550)
+      print(c, '۰۳ / ۰۸', 497, 45, 20, '#ff7a1a', 500)
       for (let i = 0; i < 3; i++) {
         const y = 74 + i * 76
         c.fillStyle = '#202c30'
@@ -902,13 +919,13 @@ function initMachineScene(
         c.fillRect(34, y + 10, 27, 41)
         print(
           c,
-          ['Product overview', 'Brand story', 'New collection'][i],
+          ['معرفی محصول', 'داستان برند', 'کالکشن جدید'][i],
           77,
           y + 29,
           19,
           '#d4d8cc'
         )
-        print(c, i === 0 ? 'RENDERING' : 'QUEUED', 77, y + 49, 11, i === 0 ? '#c57e45' : '#81948f')
+        print(c, i === 0 ? 'در حال رندر' : 'در صف', 77, y + 49, 11, i === 0 ? '#c57e45' : '#81948f')
         c.fillStyle = '#334348'
         c.fillRect(377, y + 26, 214, 7)
         c.fillStyle = i === 0 ? '#ff7a1a' : '#607475'
@@ -949,8 +966,8 @@ function initMachineScene(
         c.arc(26 + i * 19, 27, 4, 0, TAU)
         c.fill()
       }
-      print(c, 'YOUR PRODUCT', 33, 100, 22, '#22282b', 650)
-      print(c, 'Home    Catalog    Account', 535, 98, 14, '#6a7271')
+      print(c, 'محصول شما', 33, 100, 22, '#22282b', 650)
+      print(c, 'خانه    کاتالوگ    حساب', 535, 98, 14, '#6a7271')
       c.fillStyle = '#ff7a1a'
       c.beginPath()
       c.roundRect(32, 131, 287, 401, 10)
@@ -962,12 +979,12 @@ function initMachineScene(
         c.ellipse(175, 320, 75 - i * 17, 94, 0.4, 0, TAU)
         c.stroke()
       }
-      print(c, 'FROM IDEA', 52, 181, 29, '#242827', 700)
-      print(c, 'TO PRODUCT.', 52, 220, 29, '#242827', 700)
-      print(c, 'Your idea.', 359, 197, 41, '#22282b', 600)
-      print(c, 'Already live.', 359, 252, 41, '#22282b', 600)
-      print(c, 'A video that tells people', 362, 300, 19, '#77807b')
-      print(c, 'what matters most.', 362, 329, 19, '#77807b')
+      print(c, 'از ایده', 52, 181, 29, '#242827', 700)
+      print(c, 'تا محصول.', 52, 220, 29, '#242827', 700)
+      print(c, 'ایده‌ی شما.', 359, 197, 41, '#22282b', 600)
+      print(c, 'همین حالا آنلاین.', 359, 252, 41, '#22282b', 600)
+      print(c, 'ویدیویی که به مخاطب می‌گوید', 362, 300, 19, '#77807b')
+      print(c, 'چه چیزی مهم‌تر است.', 362, 329, 19, '#77807b')
       for (let i = 0; i < 3; i++) {
         c.fillStyle = '#d1d5cd'
         c.fillRect(362, 363 + i * 16, 400 - i * 43, 5)
@@ -976,8 +993,8 @@ function initMachineScene(
       c.beginPath()
       c.roundRect(359, 447, 279, 62, 7)
       c.fill()
-      print(c, 'Order a video  ↗', 390, 486, 22, '#f4f1ea', 500)
-      print(c, 'BUILT BY YOUR AGENTS', 33, 571, 12, '#879088')
+      print(c, 'سفارش ویدیو  ↗', 390, 486, 22, '#f4f1ea', 500)
+      print(c, 'ساخته‌شده با عامل‌های شما', 33, 571, 12, '#879088')
     })
     screen(storefront, 2.16, 1.43, 0, 1.95, 0.011, webTexture)
     ball(storefront, 0.024, 0, 2.747, -0.05, M.dark)
@@ -998,7 +1015,7 @@ function initMachineScene(
       c.lineTo(140, 100)
       c.lineTo(94, 134)
       c.fill()
-      print(c, 'CHANNEL', 17, 225, 23, '#283030', 600)
+      print(c, 'کانال', 17, 225, 23, '#283030', 600)
       c.fillStyle = '#b0b5b0'
       c.fillRect(17, 244, 153, 6)
       c.fillRect(17, 258, 104, 5)
@@ -1012,9 +1029,9 @@ function initMachineScene(
     const orderTex = canvasTexture(480, 460, (c, w, h) => {
       c.fillStyle = '#172224'
       c.fillRect(0, 0, w, h)
-      print(c, 'YOUR ORDERS', 30, 51, 27, '#e8e8d8', 550)
-      print(c, 'Today · 3 new', 30, 81, 16, '#869991')
-      ;['Anna', 'Michael', 'Maria'].forEach((n, i) => {
+      print(c, 'سفارش‌های شما', 30, 51, 27, '#e8e8d8', 550)
+      print(c, 'امروز · ۳ سفارش جدید', 30, 81, 16, '#869991')
+      ;['سارا', 'علی', 'مریم'].forEach((n, i) => {
         const y = 110 + i * 100
         c.fillStyle = '#283839'
         c.beginPath()
@@ -1026,7 +1043,7 @@ function initMachineScene(
         c.fill()
         print(c, n[0], 49, y + 47, 20, '#1b2828', 600)
         print(c, n, 93, y + 33, 23, '#e6e8dc', 550)
-        print(c, ['New order', 'In production', 'Video ready'][i], 93, y + 58, 15, '#94a59b')
+        print(c, ['سفارش جدید', 'در حال تولید', 'ویدیو آماده است'][i], 93, y + 58, 15, '#94a59b')
         print(c, '↗', 410, y + 49, 25, '#c57e45')
       })
     })
@@ -1056,9 +1073,9 @@ function initMachineScene(
       c.beginPath()
       c.arc(58, 98, 32, 0, TAU)
       c.fill()
-      print(c, 'A', 42, 112, 34, '#ff7a1a', 550)
-      print(c, 'Anna', 108, 91, 38, '#222822', 600)
-      print(c, 'New order  +', 108, 138, 23, '#5b4c22', 500)
+      print(c, 'س', 46, 112, 34, '#ff7a1a', 550)
+      print(c, 'سارا', 108, 91, 38, '#222822', 600)
+      print(c, 'سفارش جدید  +', 108, 138, 23, '#5b4c22', 500)
     })
     screen(incoming, 0.82, 0.39, 0, 0, 0.026, nameTex)
 
@@ -1090,7 +1107,7 @@ function initMachineScene(
       const c = cashTex.ctx
       c.fillStyle = '#12231e'
       c.fillRect(0, 0, 512, 176)
-      print(c, 'PAYMENT RECEIVED', 22, 44, 23, '#9cae91', 500)
+      print(c, 'پرداخت انجام شد', 22, 44, 23, '#9cae91', 500)
       print(c, '+ $29', 26, 131, 66, '#ecedc7', 500)
     }
     drawCash()
@@ -1102,23 +1119,23 @@ function initMachineScene(
     const receiptTex = canvasTexture(280, 540, (c, w, h) => {
       c.fillStyle = '#f4f1ea'
       c.fillRect(0, 0, w, h)
-      print(c, 'YOUR PRODUCT', 25, 52, 24, '#333d36', 650)
-      print(c, 'SALES RECEIPT', 32, 87, 19, '#566059')
+      print(c, 'محصول شما', 25, 52, 24, '#333d36', 650)
+      print(c, 'رسید فروش', 32, 87, 19, '#566059')
       c.strokeStyle = '#8a9189'
       c.setLineDash([5, 6])
       c.beginPath()
       c.moveTo(22, 115)
       c.lineTo(258, 115)
       c.stroke()
-      print(c, 'Video', 25, 154, 22, '#333d36')
+      print(c, 'ویدیو', 25, 154, 22, '#333d36')
       print(c, '1 × $29', 25, 190, 21, '#333d36')
-      print(c, 'PAID', 25, 263, 31, '#333d36', 650)
-      print(c, 'Thank you!', 25, 317, 24, '#687067')
+      print(c, 'پرداخت شد', 25, 263, 31, '#333d36', 650)
+      print(c, 'سپاسگزاریم!', 25, 317, 24, '#687067')
       for (let i = 0; i < 44; i++) {
         c.fillStyle = '#333d36'
         c.fillRect(25 + i * 5, 370, 1 + (i % 3), 83)
       }
-      print(c, 'No. 0001', 81, 496, 17, '#59635b')
+      print(c, 'شماره‌ی ۰۰۰۱', 81, 496, 17, '#59635b')
     })
     const rp = screen(receipt, 0.41, 0.83, 0, 0.415, 0.01, receiptTex)
     rp.material.side = THREE.DoubleSide
@@ -1229,24 +1246,24 @@ function initMachineScene(
     const scriptTex = canvasTexture(256, 352, (c, w, h) => {
       c.fillStyle = '#eeeae0'
       c.fillRect(0, 0, w, h)
-      print(c, 'SCRIPT', 24, 47, 22, '#3b403a', 650)
-      print(c, '01 / Opening', 24, 85, 15, '#8b8d80')
+      print(c, 'فیلم‌نامه', 24, 47, 22, '#3b403a', 650)
+      print(c, '۰۱ / شروع', 24, 85, 15, '#8b8d80')
       for (let i = 0; i < 9; i++) {
         c.fillStyle = i === 4 ? '#c57e45' : '#aeb2a5'
         c.fillRect(24, 111 + i * 21, 190 - (i % 3) * 24, 6)
       }
-      print(c, 'DONE  ✓', 24, 327, 17, '#786124', 600)
+      print(c, 'انجام شد  ✓', 24, 327, 17, '#786124', 600)
     })
     const orderCardTex = canvasTexture(256, 352, (c, w, h) => {
       c.fillStyle = '#c57e45'
       c.fillRect(0, 0, w, h)
-      print(c, 'NEW', 21, 48, 24, '#30362d', 650)
-      print(c, 'ORDER', 21, 79, 24, '#30362d', 650)
+      print(c, 'سفارش', 21, 48, 24, '#30362d', 650)
+      print(c, 'جدید', 21, 79, 24, '#30362d', 650)
       c.strokeStyle = '#716431'
       c.lineWidth = 2
       c.strokeRect(23, 112, 210, 139)
-      print(c, 'Anna', 42, 190, 37, '#30362d', 550)
-      print(c, 'VIDEO / 01', 23, 320, 17, '#635728')
+      print(c, 'سارا', 42, 190, 37, '#30362d', 550)
+      print(c, 'ویدیو / ۰۱', 23, 320, 17, '#635728')
     })
     const packetTextures = [orderCardTex, scriptTex, videoTexture, postTex, receiptTex]
     const packets: Array<{
@@ -1510,13 +1527,13 @@ function initMachineScene(
     }
     function syncPlayback() {
       const b = $('play')
-      b.setAttribute('aria-label', playing ? 'Pause the animation' : 'Resume the animation')
+      b.setAttribute('aria-label', playing ? 'توقف انیمیشن' : 'ادامه‌ی انیمیشن')
       b.setAttribute('aria-pressed', String(!playing))
       b.innerHTML = playing
         ? '<svg width="12" height="12" viewBox="0 0 12 12" fill="currentColor"><rect x="2" y="1" width="2.5" height="10" rx=".5"/><rect x="7.5" y="1" width="2.5" height="10" rx=".5"/></svg>'
         : '<svg width="12" height="12" viewBox="0 0 12 12" fill="currentColor"><path d="M3 1l8 5-8 5z"/></svg>'
       $('status').classList.toggle('paused', !playing)
-      $('status-text').textContent = playing ? 'Machine running' : 'Machine paused'
+      $('status-text').textContent = playing ? 'ماشین در حال کار' : 'ماشین متوقف است'
     }
     function play() {
       playing = true
@@ -1580,7 +1597,7 @@ function initMachineScene(
       tooltip.classList.toggle('visible', !!s)
       if (s) {
         tooltip.querySelector('strong')!.innerHTML =
-          `<span>${String(s.index + 1).padStart(2, '0')}</span>${s.name}`
+          `<span>${faDigits(String(s.index + 1).padStart(2, '0'))}</span>${s.name}`
         tooltip.querySelector('p')!.textContent = s.desc
         tooltip.style.left = Math.min(width - 255, Math.max(10, (e.clientX - root.getBoundingClientRect().left) + 16)) + 'px'
         tooltip.style.top = Math.max(10, Math.min(height - 95, (e.clientY - root.getBoundingClientRect().top) - 65)) + 'px'
@@ -1620,7 +1637,7 @@ function initMachineScene(
       e.preventDefault()
       contextLost = true
       showError(
-        'The graphics context was interrupted. The scene comes back on its own once WebGL is available again.'
+        'اتصال گرافیکی قطع شد. به‌محض در دسترس شدن دوباره‌ی WebGL، صحنه خودش برمی‌گردد.'
       )
     })
     listen(renderer.domElement, 'webglcontextrestored', () => {
@@ -1632,11 +1649,11 @@ function initMachineScene(
     const scratch = new THREE.Vector3(),
       anchor = new THREE.Vector3()
     const journeySteps = [
-      ['New order', 'Cabinet · an order from Anna'],
-      ['Writing the script', 'Engine · the idea becomes a story'],
-      ['Assembling the video', 'Admin · voice, video and subtitles'],
-      ['Publishing the product', 'Storefront · the video on your page'],
-      ['Payment received', 'Checkout · receipt printed, coin in'],
+      ['سفارش جدید', 'پنل مشتری · سفارشی از سارا'],
+      ['نوشتن فیلم‌نامه', 'موتور · ایده به داستان تبدیل می‌شود'],
+      ['ساخت ویدیو', 'مدیریت · صدا، تصویر و زیرنویس'],
+      ['انتشار محصول', 'ویترین · ویدیو در صفحه‌ی شما'],
+      ['پرداخت انجام شد', 'صندوق · رسید چاپ شد، سکه وارد شد'],
     ]
     let prevJourney = -1,
       lastFrame = performance.now(),
@@ -1940,9 +1957,10 @@ const STYLES = String.raw`
 }
 .agentic-factory-3d {
   font-family:
+    Vazirmatn,
+    Tahoma,
     system-ui,
     -apple-system,
-    BlinkMacSystemFont,
     'Segoe UI',
     sans-serif;
   color: var(--white);
@@ -2641,5 +2659,11 @@ const STYLES = String.raw`
 .agentic-factory-3d #loading i {
     animation: none;
   }
+}
+
+/* Persian is a joined script: tracking would pull the letters apart. */
+.agentic-factory-3d,
+.agentic-factory-3d * {
+  letter-spacing: 0 !important;
 }
 `

@@ -27,7 +27,7 @@ export default function CircularNavigation({
   return (
     <>
       {isOpen && (
-        <div className=" fixed h-screen w-full flex items-center justify-center bg-background z-[9000]">
+        <div dir="rtl" lang="fa" className="fixed inset-0 h-screen w-full flex items-center justify-center bg-background z-[9000]">
           <div
             className="fixed inset-0 bg-black/80 flex items-center justify-center z-[10000]"
             onClick={toggleMenu}
@@ -48,6 +48,7 @@ export default function CircularNavigation({
             >
               <button
                 onClick={toggleMenu}
+                aria-label="بستن منو"
                 className="absolute aspect-square flex items-center justify-center w-12 h-12 rounded-full bg-white text-black z-10"
               >
                 <X className="w-6 h-6" />
@@ -55,14 +56,15 @@ export default function CircularNavigation({
  
               {navItems.map((item, index) => {
                 const Icon = item.icon;
-                const angle = (360 / navItems.length) * index;
+                // Right to left: start at the top and go counterclockwise.
+                const angle = -90 - (360 / navItems.length) * index;
  
                 return (
                   <div
                     key={item.name}
                     className="absolute"
                     style={{
-                      transform: `rotate(${angle}deg) translate(150px) rotate(-${angle}deg)`,
+                      transform: `rotate(${angle}deg) translate(150px) rotate(${-angle}deg)`,
                     }}
                   >
                     <Link

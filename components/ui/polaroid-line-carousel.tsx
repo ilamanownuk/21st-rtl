@@ -45,6 +45,8 @@ export type PolaroidLineCarouselProps = {
   className?: string
   style?: React.CSSProperties
   ariaLabel?: string
+  /** Reading direction. `rtl` hangs the first print on the right. Default `rtl`. */
+  dir?: "rtl" | "ltr"
 }
 
 // #region logic
@@ -78,6 +80,11 @@ export function swingStep(a: number, w: number, lineVel: number, dt: number, gai
 /** Index of the print nearest the centre for a line offset. */
 export function nearestAt(off: number, spacing: number, n: number): number {
   return clamp(Math.round(off / spacing), 0, Math.max(0, n - 1))
+}
+
+/** Persian digits. */
+export function fa(v: number | string): string {
+  return String(v).replace(/\d/g, (d) => "۰۱۲۳۴۵۶۷۸۹"[Number(d)])
 }
 
 export function pad2(n: number): string {
@@ -212,12 +219,12 @@ function paintLandscape(seed: number, palette: LandPalette, w = 1600, h = 1000):
 }
 
 const DEFAULT_SLIDES: Slide[] = [
-  { title: "First Light", caption: "Haze lifting off the eastern ridges.", palette: "dawn", seed: 3 },
-  { title: "High Pass", caption: "Cold air, clear to the far range.", palette: "alpine", seed: 8 },
-  { title: "Ember Hour", caption: "The last of the sun on the valley floor.", palette: "dusk", seed: 14 },
-  { title: "Still Valley", caption: "Morning mist that never quite lifts.", palette: "mist", seed: 21 },
-  { title: "Rose Ridge", caption: "Five ridges, one long exhale.", palette: "dawn", seed: 34 },
-  { title: "Blue Hour", caption: "Pines going dark against the snow.", palette: "alpine", seed: 55 },
+  { title: "نخستین نور", caption: "مه از روی رشته‌کوه‌های شرقی کنار می‌رود.", palette: "dawn", seed: 3 },
+  { title: "گردنه‌ی بلند", caption: "هوای سرد، روشن تا دورترین قله‌ها.", palette: "alpine", seed: 8 },
+  { title: "ساعت اخگر", caption: "آخرین نور خورشید روی کف دره.", palette: "dusk", seed: 14 },
+  { title: "دره‌ی آرام", caption: "مه صبحگاهی که هیچ‌وقت کامل کنار نمی‌رود.", palette: "mist", seed: 21 },
+  { title: "ستیغ گلگون", caption: "پنج رشته‌کوه، یک نفس عمیق.", palette: "dawn", seed: 34 },
+  { title: "ساعت آبی", caption: "کاج‌ها در برابر برف تیره می‌شوند.", palette: "alpine", seed: 55 },
 ]
 
 // Every slide as an image URL; slides without one are painted after mount.
@@ -232,7 +239,8 @@ function useSlideImages(slides: Slide[]): string[] {
 }
 
 const PL_CSS = [
-  ".pl-root{position:relative;width:100%;overflow:hidden;background:var(--pl-bg);color:var(--pl-ink);user-select:none;-webkit-user-select:none;touch-action:pan-y;outline:none;cursor:grab}",
+  ".pl-root{position:relative;width:100%;overflow:hidden;background:var(--pl-bg);color:var(--pl-ink);user-select:none;-webkit-user-select:none;touch-action:pan-y;outline:none;cursor:grab;font-family:Vazirmatn,Tahoma,ui-sans-serif,system-ui,sans-serif}",
+  ".pl-root[dir='rtl'] .pl-btn svg{transform:scaleX(-1)}",
   ".pl-root[data-drag='1']{cursor:grabbing}",
   ".pl-root:focus-visible{box-shadow:inset 0 0 0 2px var(--pl-ink)}",
   ".pl-string{position:absolute;left:0;top:0;width:100%;height:100%;pointer-events:none;overflow:visible}",
@@ -241,15 +249,15 @@ const PL_CSS = [
   ".pl-card[data-on='0'] .pl-print{transform:scale(.9);filter:saturate(.7) brightness(.96)}",
   ".pl-shot{position:relative;aspect-ratio:1;overflow:hidden;background:#d9d5cc}",
   ".pl-shot img{position:absolute;inset:0;width:100%;height:100%;max-width:none;object-fit:cover;display:block;pointer-events:none}",
-  ".pl-note{height:46px;display:flex;align-items:center;justify-content:center;padding:0 6px;font:italic 400 15px/1.1 ui-serif,Georgia,'Times New Roman',serif;color:#3b3833;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}",
+  ".pl-note{height:46px;display:flex;align-items:center;justify-content:center;padding:0 6px;font-size:15px;line-height:1.3;color:#3b3833;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}",
   ".pl-peg{position:absolute;left:50%;top:0;width:10px;height:26px;margin-left:-5px;border-radius:2px;background:linear-gradient(90deg,#c9a67a,#e3c9a1 45%,#b8915f);box-shadow:0 2px 3px rgba(0,0,0,.25)}",
   ".pl-peg::after{content:'';position:absolute;left:4px;top:8px;width:2px;height:7px;background:rgba(80,60,30,.45);border-radius:1px}",
   ".pl-bar{position:absolute;left:clamp(16px,4vw,56px);right:clamp(16px,4vw,56px);bottom:clamp(20px,4vh,40px);display:flex;align-items:center;gap:clamp(12px,2vw,24px);cursor:default}",
   ".pl-cap{flex:1;min-width:0;overflow:hidden;padding-bottom:.15em}",
   ".pl-cap>*{display:block;animation:pl-in .55s cubic-bezier(.2,.8,.2,1) both}",
-  ".pl-title{font:500 clamp(18px,2.2vw,26px)/1.15 ui-serif,Georgia,'Times New Roman',serif;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}",
-  ".pl-sub{margin-top:4px;font:400 13px/1.4 ui-sans-serif,system-ui,sans-serif;color:var(--pl-muted)}",
-  ".pl-count{font:500 12px/1 ui-monospace,SFMono-Regular,Menlo,monospace;letter-spacing:.14em;color:var(--pl-muted)}",
+  ".pl-title{font-size:clamp(18px,2.2vw,26px);font-weight:600;line-height:1.5;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}",
+  ".pl-sub{margin-top:2px;font-size:13px;line-height:1.6;color:var(--pl-muted)}",
+  ".pl-count{font-size:13px;line-height:1;white-space:nowrap;color:var(--pl-muted)}",
   ".pl-count b{color:var(--pl-ink);font-weight:500}",
   ".pl-btn{appearance:none;width:40px;height:40px;border-radius:50%;border:1px solid var(--pl-line);background:transparent;color:inherit;display:grid;place-items:center;cursor:pointer;transition:background .2s ease,color .2s ease}",
   ".pl-btn:hover{background:var(--pl-ink);color:var(--pl-bg)}",
@@ -272,7 +280,8 @@ export default function PolaroidLineCarousel({
   onChange,
   className,
   style,
-  ariaLabel = "Image carousel",
+  ariaLabel = "گالری عکس",
+  dir = "rtl",
 }: PolaroidLineCarouselProps) {
   const n = slides.length
   const srcs = useSlideImages(slides)
@@ -286,8 +295,10 @@ export default function PolaroidLineCarousel({
   const drag = React.useRef(null as null | { x: number; off: number; lx: number; lt: number; v: number; moved: boolean })
   const lastTouch = React.useRef(0)
   const activeRef = React.useRef(0)
-  const opts = React.useRef({ sag, swing })
-  opts.current = { sag, swing }
+  // +1 strings the prints left to right, -1 mirrors them for right-to-left.
+  const X = dir === "rtl" ? -1 : 1
+  const opts = React.useRef({ sag, swing, X })
+  opts.current = { sag, swing, X }
 
   const spacing = size.cw * 1.08
   const goTo = React.useCallback(
@@ -342,7 +353,7 @@ export default function PolaroidLineCarousel({
       } else {
         const before = S.off
         ;[S.off, S.vel] = springStep(S.off, S.vel, S.target, dt)
-        lineVel = -(S.off - before) / Math.max(dt, 1e-3)
+        lineVel = (-opts.current.X * (S.off - before)) / Math.max(dt, 1e-3)
       }
       const o = opts.current
       const g = reduce ? 0 : o.swing
@@ -350,7 +361,7 @@ export default function PolaroidLineCarousel({
       for (let i = 0; i < n; i++) {
         const el = cards.current[i]
         if (!el) continue
-        const x = w / 2 + i * spacing - S.off
+        const x = w / 2 + opts.current.X * (i * spacing - S.off)
         if (x < -cw * 1.5 || x > w + cw * 1.5) {
           el.style.visibility = "hidden"
           continue
@@ -418,7 +429,7 @@ export default function PolaroidLineCarousel({
     d.lx = e.clientX
     d.lt = e.timeStamp
     const max = (n - 1) * spacing
-    let off = d.off - dx
+    let off = d.off - X * dx
     if (off < 0) off *= 0.35
     if (off > max) off = max + (off - max) * 0.35
     sim.current.off = off
@@ -430,8 +441,8 @@ export default function PolaroidLineCarousel({
     if (!d) return
     if (d.moved) {
       setDragging(false)
-      sim.current.vel = -d.v * 1000
-      goTo(nearestAt(sim.current.off - d.v * 180, spacing, n))
+      sim.current.vel = -X * d.v * 1000
+      goTo(nearestAt(sim.current.off - X * d.v * 180, spacing, n))
       return
     }
     const card = (e.target as HTMLElement).closest("[data-i]")
@@ -442,8 +453,8 @@ export default function PolaroidLineCarousel({
     goTo(clamp(activeRef.current + dir, 0, n - 1))
   }
   const onKey = (e: React.KeyboardEvent) => {
-    if (e.key === "ArrowRight") step(1)
-    else if (e.key === "ArrowLeft") step(-1)
+    if (e.key === "ArrowRight") step(X)
+    else if (e.key === "ArrowLeft") step(-X)
     else return
     e.preventDefault()
   }
@@ -453,6 +464,8 @@ export default function PolaroidLineCarousel({
   return (
     <div
       ref={rootRef}
+      dir={dir}
+      lang="fa"
       className={["pl-root", className].filter(Boolean).join(" ")}
       style={{
         height,
@@ -493,21 +506,21 @@ export default function PolaroidLineCarousel({
           {s.caption ? <span className="pl-sub">{s.caption}</span> : null}
         </div>
         <span className="pl-count" aria-hidden="true">
-          <b>{pad2(active + 1)}</b> / {pad2(n)}
+          <b>{fa(pad2(active + 1))}</b> / {fa(pad2(n))}
         </span>
-        <button type="button" className="pl-btn" aria-label="Previous" onClick={() => step(-1)}>
+        <button type="button" className="pl-btn" aria-label="قبلی" onClick={() => step(-1)}>
           <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
             <path d="M10 3 5 8l5 5" stroke="currentColor" strokeWidth="1.4" />
           </svg>
         </button>
-        <button type="button" className="pl-btn" aria-label="Next" onClick={() => step(1)}>
+        <button type="button" className="pl-btn" aria-label="بعدی" onClick={() => step(1)}>
           <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
             <path d="m6 3 5 5-5 5" stroke="currentColor" strokeWidth="1.4" />
           </svg>
         </button>
       </div>
       <div className="pl-sr" aria-live="polite">
-        {"Print " + (active + 1) + " of " + n + (s.title ? ": " + s.title : "")}
+        {"عکس " + fa(active + 1) + " از " + fa(n) + (s.title ? ": " + s.title : "")}
       </div>
     </div>
   )

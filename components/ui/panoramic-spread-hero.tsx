@@ -25,14 +25,14 @@ export type PanoramicSpreadHeroProps = {
 
 // Fresh, guaranteed working high-quality Unsplash images (Architecture & Minimalist theme)
 export const DEFAULT_IMAGES: PanoramicImage[] = [
-  { src: "https://cdn.21st.dev/assets/mirror/67/678d13ab2f51cc194ee7109f41e5c4b74a33f143dde876368a93b748a5bdb2f6.jpg", alt: "Modern House" },
-  { src: "https://cdn.21st.dev/assets/mirror/48/48db070b82ddcf8b658c59af85c75da59a27c6e58a5f00516c5f04e2bb56bfcc.jpg", alt: "Minimal Interior" },
-  { src: "https://cdn.21st.dev/assets/mirror/cb/cb94e95db92613e6820992054bd69aacd17bb6d19975d7074e3a0918a2e58ffa.jpg", alt: "Skyscraper" },
-  { src: "https://cdn.21st.dev/assets/mirror/0a/0ac930f1672abb5537c077f93d57630003552302f6298a35dd56e251b9551978.jpg", alt: "Office Space" },
-  { src: "https://cdn.21st.dev/assets/mirror/3d/3dd10040aa5ee45e1a0a219a5f723f31d2b99ed12e22974fdfb4925acee2b875.jpg", alt: "White Building" },
-  { src: "https://cdn.21st.dev/assets/mirror/48/48db070b82ddcf8b658c59af85c75da59a27c6e58a5f00516c5f04e2bb56bfcc.jpg", alt: "Minimal Interior 2" },
-  { src: "https://cdn.21st.dev/assets/mirror/cb/cb94e95db92613e6820992054bd69aacd17bb6d19975d7074e3a0918a2e58ffa.jpg", alt: "Skyscraper 2" },
-  { src: "https://cdn.21st.dev/assets/mirror/ed/ed485fec61b842ac40b18e53cdac628a9049fcdbd4a07be356cd75a39a58ff6b.jpg", alt: "Minimal Home" },
+  { src: "https://cdn.21st.dev/assets/mirror/67/678d13ab2f51cc194ee7109f41e5c4b74a33f143dde876368a93b748a5bdb2f6.jpg", alt: "خانه‌ی مدرن" },
+  { src: "https://cdn.21st.dev/assets/mirror/48/48db070b82ddcf8b658c59af85c75da59a27c6e58a5f00516c5f04e2bb56bfcc.jpg", alt: "فضای داخلی مینیمال" },
+  { src: "https://cdn.21st.dev/assets/mirror/cb/cb94e95db92613e6820992054bd69aacd17bb6d19975d7074e3a0918a2e58ffa.jpg", alt: "آسمان‌خراش" },
+  { src: "https://cdn.21st.dev/assets/mirror/0a/0ac930f1672abb5537c077f93d57630003552302f6298a35dd56e251b9551978.jpg", alt: "فضای اداری" },
+  { src: "https://cdn.21st.dev/assets/mirror/3d/3dd10040aa5ee45e1a0a219a5f723f31d2b99ed12e22974fdfb4925acee2b875.jpg", alt: "ساختمان سفید" },
+  { src: "https://cdn.21st.dev/assets/mirror/48/48db070b82ddcf8b658c59af85c75da59a27c6e58a5f00516c5f04e2bb56bfcc.jpg", alt: "فضای داخلی مینیمال ۲" },
+  { src: "https://cdn.21st.dev/assets/mirror/cb/cb94e95db92613e6820992054bd69aacd17bb6d19975d7074e3a0918a2e58ffa.jpg", alt: "آسمان‌خراش ۲" },
+  { src: "https://cdn.21st.dev/assets/mirror/ed/ed485fec61b842ac40b18e53cdac628a9049fcdbd4a07be356cd75a39a58ff6b.jpg", alt: "خانه‌ی مینیمال" },
 ];
 
 // Calculate a sweeping 3D arch around the center point for both mobile and desktop
@@ -41,7 +41,8 @@ const generatePanoramicCards = (images: PanoramicImage[]) => {
   const centerIndex = (total - 1) / 2;
 
   return images.map((item, i) => {
-    const offset = i - centerIndex;
+    // Right to left: the first image sits at the right end of the arch.
+    const offset = centerIndex - i;
     const absOffset = Math.abs(offset);
     const zIndex = Math.round(10 - absOffset);
 
@@ -154,9 +155,9 @@ function GalleryCard({ card, progress, isSpreadActive, isMobile }: any) {
 
 export default function PanoramicSpreadHero({
   images = DEFAULT_IMAGES,
-  eyebrow = "Exhibition",
-  title = "Curated Space.",
-  description = "Scroll to unspool the collection. Leveraging 3D spatial transforms to bend the digital layout dynamically around the viewer.",
+  eyebrow = "نمایشگاه",
+  title = "فضای منتخب.",
+  description = "اسکرول کنید تا مجموعه باز شود؛ چیدمان با تبدیل‌های سه‌بعدی دور بیننده خم می‌شود.",
   className = "",
 }: PanoramicSpreadHeroProps = {}) {
   const cards = useMemo(() => generatePanoramicCards(images), [images]);
@@ -193,6 +194,8 @@ export default function PanoramicSpreadHero({
   return (
     <section 
       ref={wrapRef} 
+      dir="rtl"
+      lang="fa"
       className={`relative w-full h-[400vh] ${className} bg-neutral-50 text-neutral-900 dark:bg-neutral-950 dark:text-white transition-colors duration-500`}
     >
       <div
@@ -225,10 +228,10 @@ export default function PanoramicSpreadHero({
           className="pointer-events-none absolute z-[5] flex flex-col items-center text-center px-6"
           style={{ y: textY, scale: textScale, opacity: textOpacity }}
         >
-          <span className="text-xs md:text-[0.9vw] uppercase tracking-[0.4em] font-semibold text-neutral-500 dark:text-neutral-400 mb-4">
+          <span className="text-xs md:text-[0.9vw] font-semibold text-neutral-500 dark:text-neutral-400 mb-4">
             {eyebrow}
           </span>
-          <h2 className="text-5xl md:text-[5.5vw] font-serif leading-none tracking-tight">
+          <h2 className="text-5xl md:text-[5.5vw] font-bold leading-[1.2]">
             {title}
           </h2>
           <p className="mt-6 max-w-[45ch] text-sm md:text-[1.1vw] font-light leading-relaxed opacity-70">

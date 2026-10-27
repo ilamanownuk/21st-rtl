@@ -64,6 +64,7 @@ export default function Page() {
     notes: [
       "این کامپوننت فقط در سمت کلاینت اجرا می‌شود (\"use client\" دارد). در Next.js اگر می‌خواهید از رندر سمت سرور صرف‌نظر کنید، آن را با next/dynamic و ssr: false بارگذاری کنید.",
       "استایل‌هایش داخل خود فایل تعریف شده و به تنظیمات Tailwind وابسته نیست.",
+      "کامپوننت فارسی و راست‌به‌چپ است و فونتش Vazirmatn (و در نبودش Tahoma) است؛ وزیرمتن را در پروژه بارگذاری کنید (در Next.js با next/font/google). متن روی صفحه‌های داخل صحنه هم با جهت راست‌به‌چپ روی canvas رسم می‌شود.",
     ],
   },
   {
@@ -100,11 +101,11 @@ export default function Example() {
   );
 }`,
     props: [
-      { name: "holder", type: "string", default: "'Alex Morgan'", description: "نام دارنده‌ی کارت." },
-      { name: "number", type: "string", default: "'4716 0381 9254 4242'", description: "شماره‌ی ۱۶ رقمی (فاصله اختیاری). تا قبل از نمایش فقط ۴ رقم آخر دیده می‌شود." },
+      { name: "holder", type: "string", default: "'سارا احمدی'", description: "نام دارنده‌ی کارت." },
+      { name: "number", type: "string", default: "'6037 9918 2540 4242'", description: "شماره‌ی ۱۶ رقمی (فاصله اختیاری). تا قبل از نمایش فقط ۴ رقم آخر دیده می‌شود." },
       { name: "expires", type: "string", default: "'09/29'", description: "تاریخ انقضا." },
-      { name: "cvv", type: "string", default: "'731'", description: "کد CVV پشت کارت." },
-      { name: "tier", type: "string", default: "'Titanium'", description: "برچسب کوچک گوشه‌ی بالا." },
+      { name: "cvv", type: "string", default: "'731'", description: "کد CVV2 پشت کارت." },
+      { name: "tier", type: "string", default: "'تیتانیوم'", description: "برچسب کوچک گوشه‌ی بالا." },
       { name: "logo", type: "ReactNode", description: "لوگوی بالای کارت؛ اگر ندهید یک لوگوی نمونه نمایش داده می‌شود." },
       { name: "network", type: "ReactNode", description: "نشان شبکه‌ی پرداخت در پایین کارت؛ پیش‌فرض دو دایره‌ی خنثی است." },
       { name: "maxTilt", type: "number", default: "14", description: "حداکثر زاویه‌ی کج شدن بر حسب درجه." },
@@ -124,7 +125,10 @@ export default function Example() {
         ],
       },
     ],
-    notes: ["فونت پیش‌فرض کارت Geist است؛ اگر در پروژه بارگذاری نشده باشد از فونت سیستم استفاده می‌شود."],
+    notes: [
+      "کامپوننت فارسی و راست‌به‌چپ است و فونتش Vazirmatn (و در نبودش Tahoma) است؛ وزیرمتن را در پروژه بارگذاری کنید (در Next.js با next/font/google).",
+      "شماره‌ی کارت، تاریخ انقضا و CVV2 مثل کارت‌های بانکی ایرانی با ارقام لاتین و چپ‌به‌راست نمایش داده می‌شوند.",
+    ],
   },
   {
     slug: "card-image-carousel",
@@ -170,13 +174,14 @@ export default function Example() {
       { name: "controls", type: "boolean", default: "true", description: "نمایش نوار قبلی / نقطه‌ها / بعدی." },
       { name: "background", type: "string", description: "پس‌زمینه‌ی ریشه؛ هر رنگ یا گرادیان CSS." },
       { name: "color", type: "string", description: "رنگ متن، نقطه‌ها و دکمه‌ها." },
-      { name: "fontFamily", type: "string", default: "'\"Bricolage Grotesque\", …'", description: "فونت متن‌ها." },
+      { name: "fontFamily", type: "string", default: "'Vazirmatn, Tahoma, …'", description: "فونت متن‌ها." },
       { name: "fontHref", type: "string | null", default: "null", description: "آدرس استایل‌شیت فونت (مثلاً Google Fonts)." },
       { name: "index", type: "number", description: "اندیس کنترل‌شده؛ برای حالت کنترل‌نشده ندهید." },
       { name: "defaultIndex", type: "number", default: "3", description: "اندیس اولیه در حالت کنترل‌نشده." },
       { name: "onIndexChange", type: "(index: number) => void", description: "هنگام تغییر کارت جلو." },
       { name: "onSelect", type: "(item, index) => void", description: "کلیک یا Enter روی کارتی که جلو است." },
-      { name: "ariaLabel", type: "string", default: "'Photo carousel'", description: "برچسب دسترس‌پذیری." },
+      { name: "dir", type: "'rtl' | 'ltr'", default: "'rtl'", description: "جهت. در rtl کارت بعدی پایین و سمت چپ است و کلید ← و کشیدن به راست به اسلاید بعدی می‌روند." },
+      { name: "ariaLabel", type: "string", default: "'گالری تصاویر'", description: "برچسب دسترس‌پذیری." },
       { name: "className", type: "string", description: "کلاس اضافه." },
     ],
     types: [
@@ -190,7 +195,7 @@ export default function Example() {
         ],
       },
     ],
-    notes: ["والد کامپوننت باید عرض داشته باشد (مثلاً w-full)؛ در غیر این صورت در یک flex جمع می‌شود."],
+    notes: ["والد کامپوننت باید عرض داشته باشد (مثلاً w-full)؛ در غیر این صورت در یک flex جمع می‌شود.", "شمارنده و برچسب‌های دسترس‌پذیری با ارقام فارسی نوشته می‌شوند."],
   },
   {
     slug: "carousel-of-cards-flex-col",
@@ -219,8 +224,8 @@ export default function Example() {
               title: "یک روز در ماسوله",
               image: "https://cdn.21st.dev/assets/mirror/…/photo.jpg",
               location: "گیلان، ایران",
-              price: 45,
-              currency: "€",
+              price: 1850000,
+              currency: "تومان",
               rating: 4.9,
               reviewCount: 120,
               badge: "محبوب",
@@ -242,7 +247,7 @@ export default function Example() {
         props: [
           { name: "title", type: "string", required: true, description: "عنوان ریل." },
           { name: "items", type: "ExperienceItem[]", required: true, description: "کارت‌های ریل." },
-          { name: "viewAllHref", type: "string", default: "'#'", description: "لینک «Show all»؛ با رشته‌ی خالی پنهان می‌شود." },
+          { name: "viewAllHref", type: "string", default: "'#'", description: "لینک «مشاهده‌ی همه»؛ با رشته‌ی خالی پنهان می‌شود." },
         ],
       },
       {
@@ -252,8 +257,8 @@ export default function Example() {
           { name: "title", type: "string", required: true, description: "عنوان کارت." },
           { name: "image", type: "string", required: true, description: "آدرس تصویر (با next/image نمایش داده می‌شود)." },
           { name: "location", type: "string", required: true, description: "مکان." },
-          { name: "price", type: "number", required: true, description: "قیمت." },
-          { name: "currency", type: "string", default: "'€'", description: "واحد پول." },
+          { name: "price", type: "number", required: true, description: "قیمت؛ با ارقام و جداکننده‌ی فارسی نمایش داده می‌شود." },
+          { name: "currency", type: "string", default: "'یورو'", description: "واحد پول؛ بعد از قیمت نوشته می‌شود." },
           { name: "rating", type: "number", description: "امتیاز." },
           { name: "reviewCount", type: "number", description: "تعداد نظرها." },
           { name: "badge", type: "string", description: "نشان گوشه‌ی تصویر." },
@@ -265,6 +270,7 @@ export default function Example() {
     notes: [
       "تصاویر با next/image نمایش داده می‌شوند؛ دامنه‌ی تصاویر خارجی را در images.remotePatterns فایل next.config اضافه کنید.",
       "به کامپوننت‌های shadcn یعنی Card، Badge و Button نیاز دارد. فایل‌هایشان پایین همین صفحه هست، یا با npx shadcn@latest add card badge button نصبشان کنید.",
+      "ریل‌ها راست‌به‌چپ اسکرول می‌شوند: نشان روی گوشه‌ی راست تصویر و دکمه‌ی علاقه‌مندی سمت چپ است.",
     ],
   },
   {
@@ -317,7 +323,7 @@ export default function Example() {
         ],
       },
     ],
-    notes: ["منو با position: fixed روی کل صفحه باز می‌شود و z-index بالایی دارد."],
+    notes: ["منو با position: fixed روی کل صفحه باز می‌شود و z-index بالایی دارد.", "آیتم‌ها از بالای دایره شروع می‌شوند و پادساعتگرد (راست‌به‌چپ) چیده می‌شوند."],
   },
   {
     slug: "glassmorphism-folder",
@@ -349,7 +355,7 @@ export default function Example() {
   );
 }`,
     props: [
-      { name: "label", type: "string", default: "'My Files'", description: "عنوان پوشه." },
+      { name: "label", type: "string", default: "'فایل‌های من'", description: "عنوان پوشه." },
       { name: "meta", type: "string", default: "تعداد فایل‌ها", description: "خط دوم زیر عنوان." },
       { name: "tone", type: "'light' | 'dark'", default: "'light'", description: "light شیشه‌ی شیری و dark شیشه‌ی دودی است." },
       { name: "art", type: "ArtPreset | ArtRecipe | 'none'", default: "'aurora'", description: "اثر هنری پنل پشتی: یک پریست ('aurora' | 'ember' | 'dusk' | 'glacier' | 'verdant')، دستور دلخواه، یا none." },
@@ -357,10 +363,11 @@ export default function Example() {
       { name: "image", type: "string", description: "تصویر دلخواه برای پنل پشتی به‌جای اثر تولیدی." },
       { name: "files", type: "FolderFile[]", description: "محتوای پوشه؛ فقط یک بار خوانده می‌شود." },
       { name: "action", type: "'add' | 'more' | 'none'", default: "'add'", description: "add فایل اضافه می‌کند، more منو باز می‌کند، none دکمه را پنهان می‌کند." },
-      { name: "onAdd", type: "(files) => FolderFile | void", description: "فایلی که add اضافه می‌کند را برمی‌گرداند؛ در غیر این صورت یک برگه‌ی «Untitled»." },
+      { name: "onAdd", type: "(files) => FolderFile | void", description: "فایلی که add اضافه می‌کند را برمی‌گرداند؛ در غیر این صورت یک برگه‌ی «بدون عنوان»." },
       { name: "onFilesChange", type: "(files: FolderFile[]) => void", description: "هنگام تغییر فهرست فایل‌ها." },
       { name: "menu", type: "FolderMenuItem[]", default: "[]", description: "آیتم‌های منوی more؛ گزینه‌ی باز/بستن همیشه اول است." },
-      { name: "labelPlacement", type: "'bottom-left' | 'top-left' | 'top-right'", default: "'bottom-left'", description: "جای عنوان روی پنل جلو." },
+      { name: "labelPlacement", type: "'bottom-left' | 'top-left' | 'top-right'", default: "'bottom-left'", description: "جای عنوان روی پنل جلو؛ در حالت rtl چپ و راست جابه‌جا می‌شوند." },
+      { name: "dir", type: "'rtl' | 'ltr'", default: "'rtl'", description: "جهت. در rtl کل پوشه قرینه می‌شود: زبانه، دکمه و عنوان جابه‌جا می‌شوند و متن‌ها خوانا می‌مانند." },
       { name: "open", type: "boolean", description: "حالت باز کنترل‌شده." },
       { name: "defaultOpen", type: "boolean", default: "false", description: "حالت باز اولیه." },
       { name: "onOpenChange", type: "(open: boolean) => void", description: "هنگام باز یا بسته شدن." },
@@ -391,7 +398,7 @@ export default function Example() {
         ],
       },
     ],
-    notes: ["تمام استایل‌ها داخل خود فایل است و به تنظیمات Tailwind وابسته نیست."],
+    notes: ["تمام استایل‌ها داخل خود فایل است و به تنظیمات Tailwind وابسته نیست.", "کامپوننت فارسی و راست‌به‌چپ است و فونتش Vazirmatn (و در نبودش Tahoma) است؛ وزیرمتن را در پروژه بارگذاری کنید (در Next.js با next/font/google)."],
   },
   {
     slug: "image-upload-cropper",
@@ -422,6 +429,7 @@ export default function Example() {
     notes: [
       "کلاس‌های انیمیشن animate-in از tw-animate-css می‌آیند؛ آن را نصب و در globals.css با @import \"tw-animate-css\" وارد کنید.",
       "تصویر برش‌خورده به‌صورت data URL ساخته می‌شود؛ برای ارسال به سرور، تابع تأیید داخل کامپوننت را مطابق نیازتان تغییر دهید.",
+      "اسلایدر بزرگ‌نمایی با dir=\"rtl\" از راست پر می‌شود.",
     ],
   },
   {
@@ -457,14 +465,15 @@ export default function Page() {
 }`,
     props: [
       { name: "images", type: "PanoramicImage[]", default: "۸ تصویر نمونه", description: "کارت‌های قوس به ترتیب؛ ۶ تا ۱۰ تصویر بهترین نتیجه را دارد. هر عضو { src, alt? } است." },
-      { name: "eyebrow", type: "string", default: "'Exhibition'", description: "خط کوچک بالای عنوان." },
-      { name: "title", type: "string", default: "'Curated Space.'", description: "عنوان اصلی." },
+      { name: "eyebrow", type: "string", default: "'نمایشگاه'", description: "خط کوچک بالای عنوان." },
+      { name: "title", type: "string", default: "'فضای منتخب.'", description: "عنوان اصلی." },
       { name: "description", type: "string", description: "متن زیر عنوان." },
       { name: "className", type: "string", description: "کلاس اضافه برای section." },
     ],
     notes: [
       "اسکرول پنجره را دنبال می‌کند؛ کامپوننت را مستقیم در صفحه بگذارید، نه داخل یک کادر با overflow اسکرول‌شونده.",
       "آرایه‌ی images را بیرون از کامپوننت تعریف کنید (یا با useMemo) تا در هر رندر دوباره ساخته نشود.",
+      "اولین تصویر در سمت راست قوس قرار می‌گیرد.",
     ],
   },
   {
@@ -506,7 +515,8 @@ export default function Example() {
       { name: "background", type: "string", default: "var(--color-background)", description: "رنگ پس‌زمینه." },
       { name: "ink", type: "string", default: "var(--color-foreground)", description: "رنگ متن‌ها." },
       { name: "onChange", type: "(index: number) => void", description: "هنگام تغییر عکس وسط." },
-      { name: "ariaLabel", type: "string", default: "'Image carousel'", description: "برچسب دسترس‌پذیری." },
+            { name: "dir", type: "'rtl' | 'ltr'", default: "'rtl'", description: "جهت. در rtl اولین عکس سمت راست آویزان است و کلید ← و کشیدن به راست به عکس بعدی می‌روند." },
+      { name: "ariaLabel", type: "string", default: "'گالری عکس'", description: "برچسب دسترس‌پذیری." },
       { name: "className", type: "string", description: "کلاس اضافه." },
       { name: "style", type: "CSSProperties", description: "استایل اضافه." },
     ],
@@ -523,7 +533,7 @@ export default function Example() {
         ],
       },
     ],
-    notes: ["با کلیدهای ← و → و کلیک روی هر عکس هم کار می‌کند."],
+    notes: ["با کلیدهای ← و → و کلیک روی هر عکس هم کار می‌کند.", "کامپوننت فارسی و راست‌به‌چپ است و فونتش Vazirmatn (و در نبودش Tahoma) است؛ وزیرمتن را در پروژه بارگذاری کنید (در Next.js با next/font/google)."],
   },
   {
     slug: "product-rail-gallery-fashion-store",
@@ -554,7 +564,6 @@ export default function Example() {
       items={items}
       eyebrow="فصل جدید"
       heading="رگال لباس‌ها"
-      labels={{ front: "جلو", back: "پشت", close: "بستن", show: "نمایش" }}
       autoplay
     />
   );
@@ -568,8 +577,9 @@ export default function Example() {
       { name: "autoplay", type: "boolean", default: "false", description: "لباس‌ها یکی‌یکی رو به جلو بچرخند تا کاربر تعامل کند." },
       { name: "interval", type: "number", default: "2600", description: "مدت رو به جلو ماندن هر لباس در autoplay (میلی‌ثانیه)." },
       { name: "hanger", type: "'wood' | 'matte' | 'none'", default: "'wood'", description: "نوع چوب‌لباسی؛ اگر عکس‌ها خودشان چوب‌لباسی دارند none بدهید." },
-      { name: "labels", type: "{ front, back, close, show }", default: "انگلیسی", description: "متن دکمه‌ها؛ برای فارسی‌سازی." },
-      { name: "onOpenChange", type: "(index: number | null) => void", description: "هنگام باز یا بسته شدن نمای جزئیات." },
+      { name: "labels", type: "{ front, back, close, show }", default: "جلو، پشت، بستن، نمایش", description: "متن دکمه‌ها و برچسب‌ها." },
+      { name: "onOpenChange", type: "(index: number | null) => void", description: "هنگام باز یا بسته شدن نمای جزئیات؛ اندیس بر اساس ترتیب آرایه‌ی items است." },
+      { name: "dir", type: "'rtl' | 'ltr'", default: "'rtl'", description: "جهت. در rtl اولین لباس سمت راست رگال است و پخش خودکار به سمت چپ پیش می‌رود." },
       { name: "...section props", type: "ComponentProps<'section'>", description: "هر پراپ دیگر section مثل className یا id." },
     ],
     types: [
@@ -617,7 +627,7 @@ const images = [
 
 export default function Hero() {
   return (
-    <TiltedGridHero images={images} speed={5} className="h-[560px] w-full">
+    <TiltedGridHero dir="rtl" images={images} speed={5} className="h-[560px] w-full">
       <div className="relative z-10 flex h-full items-start justify-center pt-12">
         <h1 className="text-5xl font-medium">هر قاب، در کانون توجه</h1>
       </div>
@@ -636,7 +646,7 @@ export default function Hero() {
       { name: "children", type: "ReactNode", description: "محتوایی که روی نوار تصاویر رندر می‌شود." },
       { name: "className", type: "string", description: "کلاس اضافه؛ ارتفاع هیرو را اینجا تعیین کنید." },
     ],
-    notes: ["هیرو باید ارتفاع مشخص داشته باشد (مثلاً h-[560px])."],
+    notes: ["هیرو باید ارتفاع مشخص داشته باشد (مثلاً h-[560px]).", "تصاویر از راست وارد می‌شوند و به چپ می‌روند. برای راست‌به‌چپ بودن محتوای children، dir=\"rtl\" را به خود هیرو بدهید (همه‌ی پراپ‌های div پشتیبانی می‌شوند)."],
   },
   {
     slug: "wallet-card",
@@ -657,20 +667,20 @@ import WalletCard from "@/components/ui/wallet-card-2";
 export default function Example() {
   return (
     <WalletCard
-      fundingBalance="$12,400.00"
-      tradingBalance="$8,250.75"
-      totalBalance="$20,650.75"
-      cryptoBalance="0.3521 BTC"
+      fundingBalance="۱۲٬۴۰۰ دلار"
+      tradingBalance="۸٬۲۵۰٫۷۵ دلار"
+      totalBalance="۲۰٬۶۵۰٫۷۵ دلار"
+      cryptoBalance="۰٫۳۵۲۱ بیت‌کوین"
       onDeposit={() => alert("واریز")}
       onWithdraw={() => alert("برداشت")}
     />
   );
 }`,
     props: [
-      { name: "fundingBalance", type: "string", default: "'$243,940.03'", description: "موجودی حساب صورتی «Funding»." },
-      { name: "tradingBalance", type: "string", default: "'$310,495.50'", description: "موجودی حساب بنفش «Unified Trading»." },
-      { name: "totalBalance", type: "string", default: "'$534,435.53'", description: "موجودی کل که بزرگ نمایش داده می‌شود." },
-      { name: "cryptoBalance", type: "string", default: "'9.300554 BTC'", description: "خط زیر موجودی کل." },
+      { name: "fundingBalance", type: "string", default: "'۲۴۳٬۹۴۰٫۰۳ دلار'", description: "موجودی حساب صورتی «تأمین وجه»." },
+      { name: "tradingBalance", type: "string", default: "'۳۱۰٬۴۹۵٫۵۰ دلار'", description: "موجودی حساب بنفش «معاملات»." },
+      { name: "totalBalance", type: "string", default: "'۵۳۴٬۴۳۵٫۵۳ دلار'", description: "موجودی کل که بزرگ نمایش داده می‌شود." },
+      { name: "cryptoBalance", type: "string", default: "'۹٫۳۰۰۵۵۴ بیت‌کوین'", description: "خط زیر موجودی کل." },
       { name: "onDeposit", type: "() => void", description: "کلیک دکمه‌ی واریز." },
       { name: "onWithdraw", type: "() => void", description: "کلیک دکمه‌ی برداشت." },
       { name: "onTransfer", type: "() => void", description: "کلیک دکمه‌ی انتقال." },

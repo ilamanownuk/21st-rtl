@@ -12,7 +12,7 @@ export default function Home() {
       <section className="mb-12 max-w-3xl sm:mb-16">
         <p className="text-sm font-medium text-muted-foreground">{fa(COMPONENTS.length)} کامپوننت آماده</p>
         <h1 className="mt-3 text-3xl font-bold leading-tight tracking-tight sm:text-5xl sm:leading-tight">
-          کامپوننت‌های قابل استفاده‌ی مجدد، آماده‌ی کپی
+          کامپوننت‌های فارسی و راست‌به‌چپ، آماده‌ی کپی
         </h1>
         <p className="mt-5 text-base leading-8 text-muted-foreground sm:text-lg sm:leading-9">
           برای هر کامپوننت دو راه دارید: <strong className="font-semibold text-foreground">پرامپت</strong> را کپی کنید و
@@ -24,7 +24,7 @@ export default function Home() {
             <Sparkles className="size-5 text-amber-500" aria-hidden />
             <h2 className="mt-3 font-semibold">کپی پرامپت</h2>
             <p className="mt-1 text-sm leading-7 text-muted-foreground">
-              متن کامل دستورالعمل نصب، شامل کد و وابستگی‌ها، برای Claude یا هر دستیار دیگر.
+              دستورالعمل فارسی نصب، شامل کد و وابستگی‌ها، برای Claude یا هر دستیار دیگر.
             </p>
           </div>
           <div className="rounded-xl border p-4">

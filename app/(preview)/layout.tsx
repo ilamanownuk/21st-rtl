@@ -1,9 +1,9 @@
-import { Geist, Geist_Mono } from "next/font/google";
+import { Geist_Mono, Vazirmatn } from "next/font/google";
 import "../globals.css";
 
-const geistSans = Geist({
+const vazirmatn = Vazirmatn({
   variable: "--font-app",
-  subsets: ["latin"],
+  subsets: ["arabic", "latin"],
 });
 
 const geistMono = Geist_Mono({
@@ -11,10 +11,10 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
-// Previews keep the components' own left-to-right layout.
+// Previews have no site chrome, so the iframe shows only the component.
 export default function PreviewLayout({ children }: LayoutProps<"/">) {
   return (
-    <html lang="en" dir="ltr" className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}>
+    <html lang="fa" dir="rtl" className={`${vazirmatn.variable} ${geistMono.variable} h-full antialiased`}>
       <body className="min-h-full">{children}</body>
     </html>
   );

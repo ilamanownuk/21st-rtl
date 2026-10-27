@@ -17,7 +17,7 @@ import { cn } from "@/lib/utils";
 
 const FRAME_SIZE = 208;
 const OUTPUT_SIZE = 320;
-const BUTTON_CLASS = "h-8 rounded-lg px-3 cursor-pointer";
+const BUTTON_CLASS = "h-8 gap-1.5 rounded-lg px-3 cursor-pointer";
 const ENTRANCE_ANIMATION = "animate-in fade-in zoom-in-95 duration-300";
 
 type Stage = "idle" | "editing" | "done";
@@ -194,7 +194,7 @@ const FileUpload = ({
   };
 
   return (
-    <div className="flex w-full items-center justify-center">
+    <div dir="rtl" lang="fa" className="flex w-full items-center justify-center">
       <Card className="w-full max-w-sm py-6">
         <CardContent className="px-6">
           {stage === "idle" && (
@@ -214,13 +214,13 @@ const FileUpload = ({
                   <ImageUp className="size-4 text-muted-foreground" />
                 </div>
                 <p className="text-xs font-medium text-muted-foreground">
-                  {isDragActive ? "Drop it here" : "Drag & drop an image"}
+                  {isDragActive ? "همین‌جا رها کنید" : "تصویر را بکشید و رها کنید"}
                 </p>
               </div>
 
               <div className="flex flex-col items-center gap-2">
                 <p className="max-w-52 text-xs text-muted-foreground">
-                  You&apos;ll be able to zoom, pan and rotate before uploading.
+                  پیش از آپلود می‌توانید تصویر را بزرگ، جابه‌جا و بچرخانید.
                 </p>
                 <Button
                   type="button"
@@ -228,7 +228,7 @@ const FileUpload = ({
                   className={BUTTON_CLASS}
                   onClick={open}
                 >
-                  Browse Image
+                  انتخاب تصویر
                 </Button>
               </div>
             </div>
@@ -252,7 +252,7 @@ const FileUpload = ({
                 >
                   <img
                     src={imageUrl}
-                    alt="Crop preview"
+                    alt="پیش‌نمایش برش"
                     draggable={false}
                     className="pointer-events-none absolute left-1/2 top-1/2 max-w-none"
                     style={{
@@ -278,7 +278,8 @@ const FileUpload = ({
                     min={1}
                     max={3}
                     step={0.01}
-                    aria-label="Zoom"
+                    dir="rtl"
+                    aria-label="بزرگ‌نمایی"
                   />
                 </div>
               </div>
@@ -291,7 +292,7 @@ const FileUpload = ({
                   onClick={() => setRotation((r) => (r + 90) % 360)}
                 >
                   <RotateCw className="size-3.5 transition-transform duration-300" />
-                  Rotate
+                  چرخش
                 </Button>
                 <div className="flex items-center gap-2">
                   <Button
@@ -300,7 +301,7 @@ const FileUpload = ({
                     className={BUTTON_CLASS}
                     onClick={startOver}
                   >
-                    Cancel
+                    انصراف
                   </Button>
                   <Button
                     type="button"
@@ -308,7 +309,7 @@ const FileUpload = ({
                     onClick={confirmCrop}
                   >
                     <Upload className="size-3.5" />
-                    Use Photo
+                    استفاده از تصویر
                   </Button>
                 </div>
               </div>
@@ -325,20 +326,20 @@ const FileUpload = ({
               <div className="relative">
                 <img
                   src={resultUrl ?? imageUrl ?? undefined}
-                  alt="Cropped result"
+                  alt="تصویر برش‌خورده"
                   className="size-32 rounded-full border object-cover"
                   style={{ width: FRAME_SIZE * 0.7, height: FRAME_SIZE * 0.7 }}
                 />
-                <span className="absolute bottom-0 right-1 flex size-7 items-center justify-center rounded-full bg-teal-400 text-white animate-in zoom-in duration-300">
+                <span className="absolute bottom-0 end-1 flex size-7 items-center justify-center rounded-full bg-teal-400 text-white animate-in zoom-in duration-300">
                   <Check className="size-4" />
                 </span>
               </div>
               <div className="flex flex-col items-center gap-1">
                 <p className="text-sm font-medium text-foreground">
-                  Photo ready
+                  تصویر آماده است
                 </p>
                 <p className="text-xs text-muted-foreground">
-                  Cropped and optimized for upload.
+                  برش خورد و برای آپلود بهینه شد.
                 </p>
               </div>
               <Button
@@ -347,7 +348,7 @@ const FileUpload = ({
                 className={BUTTON_CLASS}
                 onClick={startOver}
               >
-                Choose another photo
+                انتخاب تصویر دیگر
               </Button>
             </div>
           )}

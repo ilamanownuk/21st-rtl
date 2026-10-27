@@ -68,6 +68,8 @@ export type TiltCascadeCarouselProps = {
   /** Clicking (or Enter on) the card that's already in front. */
   onSelect?: (item: TiltCascadeItem, index: number) => void
   ariaLabel?: string
+  /** Reading direction. `rtl` puts the next photo down and to the left. Default `rtl`. */
+  dir?: "rtl" | "ltr"
   className?: string
 }
 
@@ -160,7 +162,7 @@ const CSS =
   ".tcc-title,.tcc-cap{position:absolute;left:50%;white-space:nowrap;pointer-events:none;opacity:0;" +
   "transform:translateX(-50%) scale(.7);transition:opacity .3s,transform .3s}" +
   ".tcc-title{bottom:calc(100% + 8px);font-size:12px;line-height:16px}" +
-  ".tcc-cap{top:calc(100% + 10px);font-size:11px;line-height:14px;letter-spacing:.02em;" +
+  ".tcc-cap{top:calc(100% + 10px);font-size:11px;line-height:14px;" +
   "color:color-mix(in oklab,currentColor 58%,transparent)}" +
   ".tcc-slide[data-active] .tcc-title,.tcc-slide[data-active] .tcc-cap{opacity:1;transform:translateX(-50%) scale(1)}" +
   "@media (min-width:768px){.tcc-title{font-size:14px;line-height:18px}.tcc-cap{font-size:12px}}" +
@@ -202,6 +204,9 @@ const blank = (i: number) => {
   return "linear-gradient(145deg, hsl(" + h + " 32% 82%), hsl(" + ((h + 40) % 360) + " 28% 64%))"
 }
 
+/** Persian digits for anything read aloud or shown as a count. */
+const fa = (v: number | string) => String(v).replace(/\d/g, (d) => "۰۱۲۳۴۵۶۷۸۹"[Number(d)])
+
 // ---- component ----------------------------------------------------------------------
 export default function TiltCascadeCarousel({
   items,
@@ -220,13 +225,14 @@ export default function TiltCascadeCarousel({
   controls = true,
   color,
   background = "color-mix(in oklab, var(--color-foreground, #000) 7%, var(--color-background, #fff))",
-  fontFamily = '"Bricolage Grotesque", ui-sans-serif, system-ui, sans-serif',
+  fontFamily = "Vazirmatn, Tahoma, ui-sans-serif, system-ui, sans-serif",
   fontHref = null,
   index,
   defaultIndex = 3,
   onIndexChange,
   onSelect,
-  ariaLabel = "Photo carousel",
+  ariaLabel = "گالری تصاویر",
+  dir = "rtl",
   className = "",
 }: TiltCascadeCarouselProps) {
   const n = items.length
@@ -248,8 +254,10 @@ export default function TiltCascadeCarousel({
     drag: null as null | { id: number; x0: number; pos0: number; moved: boolean; samples: { t: number; x: number }[] },
     clickBlock: false, wheel: 0, wheelAt: 0, stepAt: 0,
   }).current
-  const cfg = React.useRef({ n, loop, angle, drop, inactiveScale, bounce, duration })
-  cfg.current = { n, loop, angle, drop, inactiveScale, bounce, duration }
+  // +1 lays the line out to the right, -1 mirrors it for right-to-left.
+  const X: 1 | -1 = dir === "rtl" ? -1 : 1
+  const cfg = React.useRef({ n, loop, angle, drop, inactiveScale, bounce, duration, X })
+  cfg.current = { n, loop, angle, drop, inactiveScale, bounce, duration, X }
   const cb = React.useRef({ onIndexChange, active })
   cb.current = { onIndexChange, active }
 
@@ -259,8 +267,8 @@ export default function TiltCascadeCarousel({
     const d = offsetOf(i, b, c.n, c.loop)
     return {
       transform:
-        "translate3d(calc(" + dx.toFixed(4) + " * var(--tcc-s)), " + (d * c.drop * 100).toFixed(3) + "%, 0) " +
-        "scale(" + scaleAt(d, c.inactiveScale).toFixed(4) + ") rotate(" + (d * c.angle).toFixed(3) + "deg)",
+        "translate3d(calc(" + (dx * c.X).toFixed(4) + " * var(--tcc-s)), " + (d * c.drop * 100).toFixed(3) + "%, 0) " +
+        "scale(" + scaleAt(d, c.inactiveScale).toFixed(4) + ") rotate(" + (d * c.angle * c.X).toFixed(3) + "deg)",
       zIndex: 100 - Math.round(Math.abs(d) * 10),
       hidden: Math.abs(dx) > 6.5,
     }
@@ -390,7 +398,7 @@ export default function TiltCascadeCarousel({
       E.wheel += e.deltaX
       if (Math.abs(E.wheel) > 50 && now - E.stepAt > 320) {
         setStopped(true)
-        step(Math.sign(E.wheel))
+        step(Math.sign(E.wheel) * cfg.current.X)
         E.wheel = 0
         E.stepAt = now
       }
@@ -447,7 +455,7 @@ export default function TiltCascadeCarousel({
       setStopped(true)
     }
     const c = cfg.current
-    const raw = d.pos0 - (e.clientX - d.x0) / E.size
+    const raw = d.pos0 - (c.X * (e.clientX - d.x0)) / E.size
     E.a = c.loop ? raw : rubber(raw, c.n)
     d.samples.push({ t: e.timeStamp, x: e.clientX })
     if (d.samples.length > 6) d.samples.shift()
@@ -472,15 +480,17 @@ export default function TiltCascadeCarousel({
     const last = d.samples[d.samples.length - 1]
     const ms = Math.max(last.t - first.t, 1)
     // px per ms → slides per second, against the drag direction
-    const v = e.type === "pointercancel" ? 0 : (-(last.x - first.x) / ms / E.size) * 1000
+    const v = e.type === "pointercancel" ? 0 : ((-cfg.current.X * (last.x - first.x)) / ms / E.size) * 1000
     E.va = v
     setTarget(releaseTarget(E.a, v, cfg.current.n, cfg.current.loop))
   }
 
   const onKeyDown = (e: React.KeyboardEvent) => {
     let handled = true
-    if (e.key === "ArrowRight" || e.key === "ArrowDown") step(1)
-    else if (e.key === "ArrowLeft" || e.key === "ArrowUp") step(-1)
+    if (e.key === "ArrowRight") step(X)
+    else if (e.key === "ArrowLeft") step(-X)
+    else if (e.key === "ArrowDown") step(1)
+    else if (e.key === "ArrowUp") step(-1)
     else if (e.key === "Home") goTo(0)
     else if (e.key === "End") goTo(n - 1)
     else handled = false
@@ -505,6 +515,7 @@ export default function TiltCascadeCarousel({
   return (
     <div
       ref={rootRef}
+      dir={dir}
       className={"tcc-root " + className}
       style={{ height, background, color, fontFamily }}
       role="region"
@@ -543,7 +554,7 @@ export default function TiltCascadeCarousel({
               data-active={isActive ? "" : undefined}
               tabIndex={isActive ? 0 : -1}
               aria-roledescription="slide"
-              aria-label={i + 1 + " of " + n + ": " + item.title}
+              aria-label={fa(i + 1) + " از " + fa(n) + ": " + item.title}
               aria-current={isActive ? "true" : undefined}
               onClick={() => onSlideClick(i)}
               style={{ transform: t.transform, zIndex: t.zIndex, visibility: t.hidden ? "hidden" : undefined }}
@@ -581,13 +592,13 @@ export default function TiltCascadeCarousel({
 
       {controls && n > 1 ? (
         <div className="tcc-controls" data-tcc-controls="">
-          <button type="button" className="tcc-btn" aria-label="Previous slide" disabled={atStart} onClick={() => { setStopped(true); step(-1) }}>
-            <Chevron dir={-1} />
+          <button type="button" className="tcc-btn" aria-label="اسلاید قبلی" disabled={atStart} onClick={() => { setStopped(true); step(-1) }}>
+            <Chevron dir={X === 1 ? -1 : 1} />
           </button>
           <div className="tcc-dots">
             {manyDots ? (
               <span className="tcc-count">
-                {pad(active + 1)} / {pad(n)}
+                {fa(pad(active + 1))} / {fa(pad(n))}
               </span>
             ) : (
               items.map((item, i) => (
@@ -595,7 +606,7 @@ export default function TiltCascadeCarousel({
                   key={i}
                   type="button"
                   className="tcc-dot"
-                  aria-label={"Go to slide " + (i + 1) + ": " + item.title}
+                  aria-label={"رفتن به اسلاید " + fa(i + 1) + ": " + item.title}
                   aria-current={i === active ? "true" : undefined}
                   onClick={() => {
                     setStopped(true)
@@ -605,14 +616,14 @@ export default function TiltCascadeCarousel({
               ))
             )}
           </div>
-          <button type="button" className="tcc-btn" aria-label="Next slide" disabled={atEnd} onClick={() => { setStopped(true); step(1) }}>
-            <Chevron dir={1} />
+          <button type="button" className="tcc-btn" aria-label="اسلاید بعدی" disabled={atEnd} onClick={() => { setStopped(true); step(1) }}>
+            <Chevron dir={X} />
           </button>
         </div>
       ) : null}
 
       <div className="tcc-sr" aria-live="polite" aria-atomic="true">
-        {current ? "Slide " + (active + 1) + " of " + n + ": " + current.title : ""}
+        {current ? "اسلاید " + fa(active + 1) + " از " + fa(n) + ": " + current.title : ""}
       </div>
     </div>
   )

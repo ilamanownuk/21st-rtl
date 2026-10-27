@@ -97,6 +97,8 @@ export type GlassFolderProps = {
   onFileSelect?: (file: FolderFile, index: number) => void
   /** Width in px. Everything else scales with it; the height is 0.96 × width. */
   width?: number
+  /** Reading direction. `rtl` mirrors the folder: tab, key and label swap sides. Default `rtl`. */
+  dir?: "rtl" | "ltr"
   /** Assemble itself the first time it scrolls into view. */
   appear?: boolean
   /** Delay before that entrance, in ms — for staggering a row of folders. */
@@ -104,6 +106,9 @@ export type GlassFolderProps = {
   className?: string
   style?: React.CSSProperties
 }
+
+/** Persian digits for counts. */
+const fa = (n: number) => n.toLocaleString("fa-IR")
 
 // #region art
 export const ART_PRESETS: Record<ArtPreset, ArtRecipe> = {
@@ -522,13 +527,14 @@ const FRONT_PATH =
 const MAX_VISIBLE = 4
 
 const SAMPLE_FILES: FolderFile[] = [
-  { name: "Cover — final", meta: "PNG · 4.8 MB", art: "ember" },
-  { name: "Moodboard", meta: "24 images", art: "dusk" },
-  { name: "Brief.pdf", meta: "PDF · 1.2 MB" },
+  { name: "کاور — نهایی", meta: "PNG · ۴٫۸ مگابایت", art: "ember" },
+  { name: "مودبورد", meta: "۲۴ تصویر", art: "dusk" },
+  { name: "بریف پروژه", meta: "PDF · ۱٫۲ مگابایت" },
 ]
 
 export default function GlassFolder({
-  label = "My Files",
+  label = "فایل‌های من",
+  dir = "rtl",
   meta,
   tone = "light",
   art = "aurora",
@@ -674,7 +680,7 @@ export default function GlassFolder({
 
   const addFile = () => {
     const made = onAdd?.(files)
-    const file: FolderFile = made || { name: "Untitled " + (files.length + 1), meta: "Just now" }
+    const file: FolderFile = made || { name: "بدون عنوان " + fa(files.length + 1), meta: "همین الان" }
     const next = [...files, file]
     const id = nextId.current++
     ids.current = [...ids.current, id]
@@ -685,7 +691,7 @@ export default function GlassFolder({
   }
 
   const menuItems: FolderMenuItem[] = [
-    { label: open ? "Close folder" : "Open folder", onSelect: () => setOpen(!open) },
+    { label: open ? "بستن پوشه" : "باز کردن پوشه", onSelect: () => setOpen(!open) },
     ...menu,
   ]
 
@@ -707,11 +713,13 @@ export default function GlassFolder({
   const start = Math.max(0, files.length - MAX_VISIBLE)
   const visible = files.slice(start)
   const count = files.length
-  const metaLine = meta ?? count + (count === 1 ? " item" : " items")
+  const metaLine = meta ?? fa(count) + " مورد"
 
   return (
     <div
       ref={rootRef}
+      dir={dir}
+      lang="fa"
       className={"gf-root" + (className ? " " + className : "")}
       data-tone={tone}
       data-open={open || undefined}
@@ -760,7 +768,7 @@ export default function GlassFolder({
               type="button"
               className="gf-hit"
               aria-expanded={open}
-              aria-label={(open ? "Close " : "Open ") + label + ", " + count + (count === 1 ? " item" : " items")}
+              aria-label={(open ? "بستن " : "باز کردن ") + label + "، " + fa(count) + " مورد"}
               onClick={() => {
                 setMenuOpen(false)
                 setOpen(!open)
@@ -775,7 +783,7 @@ export default function GlassFolder({
           </div>
 
           {/* the contents: after the glass in tab order, beneath it on screen */}
-          <div ref={filesRef} className="gf-files" role="list" aria-label={label + " contents"}>
+          <div ref={filesRef} className="gf-files" role="list" aria-label={"محتوای " + label}>
             {visible.map((file, v) => {
               const id = ids.current[start + v]
               const slot = fanSlot(v, visible.length)
@@ -844,7 +852,7 @@ export default function GlassFolder({
               ref={keyRef}
               type="button"
               className={"gf-key gf-key--" + action}
-              aria-label={action === "add" ? "Add a file to " + label : "More options for " + label}
+              aria-label={action === "add" ? "افزودن فایل به " + label : "گزینه‌های بیشتر برای " + label}
               aria-haspopup={action === "more" ? "menu" : undefined}
               aria-expanded={action === "more" ? menuOpen : undefined}
               aria-controls={action === "more" ? "gf-menu-" + uid : undefined}
@@ -869,7 +877,7 @@ export default function GlassFolder({
               ref={menuRef}
               id={"gf-menu-" + uid}
               role="menu"
-              aria-label={label + " options"}
+              aria-label={"گزینه‌های " + label}
               className="gf-menu"
               data-open={menuOpen || undefined}
               onKeyDown={onMenuKey}
@@ -916,7 +924,7 @@ const GF_CSS = `
   display: inline-block;
   flex: none;
   vertical-align: top;
-  font-family: ui-sans-serif, system-ui, -apple-system, "SF Pro Text", "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  font-family: Vazirmatn, Tahoma, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -webkit-tap-highlight-color: transparent;
   isolation: isolate;
@@ -1085,9 +1093,7 @@ canvas.gf-sheet-art[data-ready] { opacity: 1; filter: none; }
 }
 .gf-sheet-meta {
   flex: none;
-  font-family: ui-monospace, "SF Mono", SFMono-Regular, Menlo, Consolas, monospace;
   font-size: 10px;
-  letter-spacing: .02em;
   color: rgba(24, 24, 27, .5);
 }
 .gf-root[data-tone="dark"] .gf-sheet-name, .gf-sheet--art .gf-sheet-name { color: #fafafa; }
@@ -1196,13 +1202,21 @@ canvas.gf-sheet-art[data-ready] { opacity: 1; filter: none; }
   white-space: nowrap;
 }
 .gf-meta {
-  font-family: ui-monospace, "SF Mono", SFMono-Regular, Menlo, Consolas, monospace;
   font-size: 12px;
-  letter-spacing: .03em;
   color: var(--gf-ink-soft);
   white-space: nowrap;
   animation: gf-roll .5s var(--gf-ease) both;
 }
+/* Right to left: mirror the object, then turn the words and photos back round. */
+.gf-root[dir="rtl"] .gf-tilt {
+  scale: -1 1;
+  transform: perspective(1400px) rotateX(calc(var(--gf-py) * -3deg)) rotateY(calc(var(--gf-px) * -4deg));
+}
+.gf-root[dir="rtl"] :is(.gf-label, .gf-sheet-head, .gf-menu-item, img.gf-art, img.gf-sheet-art) {
+  scale: -1 1;
+}
+.gf-root[dir="rtl"] .gf-label { align-items: flex-start; }
+.gf-root * { letter-spacing: 0 !important; }
 @keyframes gf-roll {
   from { opacity: 0; translate: 0 7px; filter: blur(3px); }
   to { opacity: 1; translate: 0 0; filter: blur(0); }

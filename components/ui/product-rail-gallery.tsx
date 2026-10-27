@@ -51,7 +51,12 @@ export interface ClothingRailHeroProps extends React.ComponentProps<"section"> {
   hanger?: "wood" | "matte" | "none";
   labels?: ClothingRailHeroLabels;
   onOpenChange?: (index: number | null) => void;
+  /** Reading direction. `rtl` hangs the first piece on the right. Default `rtl`. */
+  dir?: "rtl" | "ltr";
 }
+
+/** Persian digits. */
+const fa = (s: string) => s.replace(/\d/g, (d) => "۰۱۲۳۴۵۶۷۸۹"[Number(d)]);
 
 const VB_W = 200;
 const VB_H = 310;
@@ -64,7 +69,7 @@ const GAP = 0.035;
 const MAX_H = 400;
 const MIN_WIDE_H = 200;
 const CAROUSEL_H = 340;
-const DEFAULT_LABELS: ClothingRailHeroLabels = { front: "Front", back: "Back", close: "Close", show: "Show" };
+const DEFAULT_LABELS: ClothingRailHeroLabels = { front: "جلو", back: "پشت", close: "بستن", show: "نمایش" };
 
 type Tone = { d: string; t: number };
 type Art = {
@@ -522,7 +527,22 @@ function footprint(h: number, angle: number, sideW = 0.4) {
   return h * ASPECT * (sideW + (0.94 - sideW) * ease);
 }
 
-export function ClothingRailHero({
+/**
+ * Right to left, the rail simply hangs the pieces in reverse order so the first
+ * one is on the right; indices handed back to you still count from your list.
+ */
+export function ClothingRailHero({ items, dir = "rtl", onOpenChange, ...props }: ClothingRailHeroProps) {
+  const reverse = dir === "rtl";
+  const ordered = React.useMemo(() => (reverse ? [...items].reverse() : items), [items, reverse]);
+  const last = items.length - 1;
+  const handleOpenChange = React.useCallback(
+    (index: number | null) => onOpenChange?.(index === null || !reverse ? index : last - index),
+    [onOpenChange, reverse, last],
+  );
+  return <RailInner {...props} items={ordered} dir={dir} reverse={reverse} onOpenChange={handleOpenChange} />;
+}
+
+function RailInner({
   items,
   eyebrow,
   heading,
@@ -534,8 +554,9 @@ export function ClothingRailHero({
   labels = DEFAULT_LABELS,
   onOpenChange,
   className,
+  reverse = false,
   ...rest
-}: ClothingRailHeroProps) {
+}: ClothingRailHeroProps & { reverse?: boolean }) {
   const uid = React.useId().replace(/[^a-zA-Z0-9_-]/g, "");
   const count = items.length;
   const stageRef = React.useRef(null as HTMLDivElement | null);
@@ -559,7 +580,7 @@ export function ClothingRailHero({
   const pendingOpen = React.useRef(-1);
   const pointer = React.useRef({ id: -1, index: -1, x: 0, y: 0, t: 0, moved: false, kind: "", swipe: 0, lastX: 0, lastT: 0, v: 0 });
   const sideWidths = React.useMemo(() => items.map((item) => (item.image ? (item.sideImage ? 0.3 : 0.4) : SIDE[item.kind ?? "tee"].width)), [items]);
-  const live = React.useRef({ active: null as number | null, size, reduced, count, openIndex: null as number | null, carouselIndex: 0, sideWidths });
+  const live = React.useRef({ active: null as number | null, size, reduced, count, openIndex: null as number | null, carouselIndex: reverse ? items.length - 1 : 0, sideWidths });
   live.current = { ...live.current, active, size, reduced, count, openIndex, sideWidths };
 
   const carouselIndex = size.carousel ? (active ?? live.current.carouselIndex) : null;
@@ -778,12 +799,14 @@ export function ClothingRailHero({
     if (!playing || reduced || openIndex !== null || count === 0 || !size.width) return;
     const first = window.setTimeout(function advance() {
       const current = live.current.active;
-      choose(current === null ? 0 : (current + 1) % live.current.count);
+      const n = live.current.count;
+      // Autoplay reads in the list's order: leftward when the rail is reversed.
+      choose(current === null ? (reverse ? n - 1 : 0) : (current + (reverse ? n - 1 : 1)) % n);
       timer = window.setTimeout(advance, interval);
     }, active === null ? 1100 : interval);
     let timer = first;
     return () => window.clearTimeout(timer);
-  }, [playing, reduced, openIndex, count, interval, size.width, choose, active]);
+  }, [playing, reduced, openIndex, count, interval, size.width, choose, active, reverse]);
 
   const open = React.useCallback((index: number) => {
     stop();
@@ -931,8 +954,8 @@ export function ClothingRailHero({
       <div aria-hidden="true" className="pointer-events-none absolute inset-0 -z-10" style={{ background: "radial-gradient(120% 70% at 18% 0%, color-mix(in oklab, var(--color-foreground) 7%, transparent), transparent 62%), linear-gradient(to bottom, transparent 55%, color-mix(in oklab, var(--color-foreground) 5%, transparent))" }} />
       {(eyebrow || heading) && (
         <header className="relative z-10 flex flex-col items-center gap-2 px-6 pt-8 text-center">
-          {eyebrow && <p className="text-[11px] font-medium uppercase tracking-[0.28em] text-muted-foreground">{eyebrow}</p>}
-          {heading && <h2 className="text-balance text-2xl font-medium tracking-tight sm:text-3xl">{heading}</h2>}
+          {eyebrow && <p className="text-xs font-medium text-muted-foreground">{eyebrow}</p>}
+          {heading && <h2 className="text-balance text-2xl font-semibold leading-relaxed sm:text-3xl">{heading}</h2>}
         </header>
       )}
 
@@ -940,7 +963,7 @@ export function ClothingRailHero({
         ref={stageRef}
         data-stage
         role="group"
-        aria-label={heading ?? "Clothing rail"}
+        aria-label={heading ?? "رگال لباس"}
         className="relative mt-5 w-full touch-pan-y select-none"
         style={{ height: Math.round(railY + h * bottom + h * 0.05 + 12), overflowX: "clip" }}
         onPointerMove={onPointerMove}
@@ -1011,7 +1034,7 @@ export function ClothingRailHero({
                 {item.tag && (
                   <span ref={(node) => { tags.current[i] = node; }} aria-hidden="true" className="pointer-events-none absolute left-1/2 origin-top" style={{ top: (32 / VB_H) * h, transform: "rotate(-12deg)" }}>
                     <span className="block h-[14px] w-px translate-x-[3px] bg-foreground/35" />
-                    <span className="block -translate-x-1/2 translate-x-[3px] whitespace-nowrap rounded-[3px] border border-foreground/10 bg-card px-1.5 pb-1 pt-2 text-[9px] font-semibold leading-none tracking-wide text-card-foreground shadow-[0_2px_6px_color-mix(in_oklab,var(--color-foreground)_18%,transparent)]">
+                    <span className="block -translate-x-1/2 translate-x-[3px] whitespace-nowrap rounded-[3px] border border-foreground/10 bg-card px-1.5 pb-1 pt-2 text-[10px] font-semibold leading-none text-card-foreground shadow-[0_2px_6px_color-mix(in_oklab,var(--color-foreground)_18%,transparent)]">
                       <span className="absolute left-1/2 top-[3px] size-[3px] -translate-x-1/2 rounded-full bg-foreground/30" />
                       {item.tag}
                     </span>
@@ -1024,7 +1047,8 @@ export function ClothingRailHero({
       </div>
 
       {size.carousel && count > 1 && (
-        <div className="relative z-10 mt-1 flex justify-center gap-1.5" role="group" aria-label={labels.show}>
+        /* Dots follow the rail as it hangs, left to right, whatever the reading direction. */
+        <div dir="ltr" className="relative z-10 mt-1 flex justify-center gap-1.5" role="group" aria-label={labels.show}>
           {items.map((item, i) => (
             <button key={item.id} type="button" aria-label={`${labels.show} ${item.name}`} aria-current={carouselIndex === i} onClick={() => { stop(); choose(i); }} className={`h-1.5 rounded-full outline-none transition-[width,background-color] duration-300 focus-visible:ring-2 focus-visible:ring-ring ${carouselIndex === i ? "w-6 bg-foreground" : "w-1.5 bg-foreground/25 hover:bg-foreground/45"}`} />
           ))}
@@ -1043,7 +1067,8 @@ export function ClothingRailHero({
         <Detail
           uid={uid}
           item={items[openIndex]}
-          index={openIndex}
+          index={reverse ? count - 1 - openIndex : openIndex}
+          rtl={rest.dir === "rtl"}
           total={count}
           hanger={hanger}
           labels={labels}
@@ -1057,7 +1082,8 @@ export function ClothingRailHero({
   );
 }
 
-function Detail({ uid, item, index, total, hanger, labels, reduced, source, onLift, onClose }: {
+function Detail({ uid, item, index, total, hanger, labels, reduced, rtl, source, onLift, onClose }: {
+  rtl?: boolean;
   uid: string;
   item: RailGarment;
   index: number;
@@ -1201,17 +1227,17 @@ function Detail({ uid, item, index, total, hanger, labels, reduced, source, onLi
   );
 
   return createPortal(
-    <div ref={dialogRef} role="dialog" aria-modal="true" aria-labelledby={titleId} className="fixed inset-0 z-50 flex items-center justify-center overflow-y-auto p-6 text-foreground" onKeyDown={onKeyDown}>
+    <div ref={dialogRef} dir={rtl ? "rtl" : "ltr"} role="dialog" aria-modal="true" aria-labelledby={titleId} className="fixed inset-0 z-50 flex items-center justify-center overflow-y-auto p-6 text-foreground" onKeyDown={onKeyDown}>
       <div aria-hidden="true" className={`absolute inset-0 bg-background/90 backdrop-blur-xl transition-opacity duration-300 motion-reduce:transition-none ${shown ? "opacity-100" : "opacity-0"}`} onClick={dismiss} />
-      <button ref={closeRef} type="button" onClick={dismiss} className={`absolute right-5 top-5 z-10 inline-flex items-center gap-2 rounded-full px-3 py-1.5 text-xs font-medium tracking-wide text-muted-foreground outline-none transition-[opacity,color] duration-300 hover:text-foreground focus-visible:ring-2 focus-visible:ring-ring motion-reduce:transition-none ${shown ? "opacity-100" : "opacity-0"}`}>
+      <button ref={closeRef} type="button" onClick={dismiss} className={`absolute end-5 top-5 z-10 inline-flex items-center gap-2 rounded-full px-3 py-1.5 text-xs font-medium text-muted-foreground outline-none transition-[opacity,color] duration-300 hover:text-foreground focus-visible:ring-2 focus-visible:ring-ring motion-reduce:transition-none ${shown ? "opacity-100" : "opacity-0"}`}>
         {labels.close}
         <svg aria-hidden="true" viewBox="0 0 16 16" className="size-3.5" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round"><path d="M3 3l10 10M13 3L3 13" /></svg>
       </button>
       <div className="relative grid w-full max-w-5xl items-center gap-10 pt-10 md:grid-cols-[minmax(0,1fr)_minmax(0,22rem)]">
         {stage}
-        <div className={`flex flex-col gap-4 text-center transition-[opacity,transform] delay-150 duration-500 motion-reduce:transition-none md:text-left ${shown ? "translate-y-0 opacity-100" : "translate-y-2 opacity-0"}`}>
-          <p className="font-mono text-[11px] tracking-[0.2em] text-muted-foreground">{String(index + 1).padStart(2, "0")} / {String(total).padStart(2, "0")}</p>
-          <h3 id={titleId} className="text-2xl font-medium tracking-tight sm:text-3xl">{item.name}</h3>
+        <div className={`flex flex-col gap-4 text-center transition-[opacity,transform] delay-150 duration-500 motion-reduce:transition-none md:text-start ${shown ? "translate-y-0 opacity-100" : "translate-y-2 opacity-0"}`}>
+          <p className="text-xs text-muted-foreground">{fa(String(index + 1).padStart(2, "0"))} / {fa(String(total).padStart(2, "0"))}</p>
+          <h3 id={titleId} className="text-2xl font-semibold leading-relaxed sm:text-3xl">{item.name}</h3>
           {item.description && <p className="text-sm leading-relaxed text-muted-foreground">{item.description}</p>}
           {item.details && item.details.length > 0 && (
             <ul className="flex flex-wrap justify-center gap-2 md:justify-start">
