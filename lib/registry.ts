@@ -131,6 +131,54 @@ export default function Example() {
     ],
   },
   {
+    slug: "bento-gallery",
+    promptFile: "bento-gallery.md",
+    name: "Interactive Bento Gallery",
+    nameFa: "گالری بنتوی تعاملی",
+    summary: "گالری افقی از کارت‌های تصویر با چیدمان بنتو که با کشیدن حرکت می‌کند و با کلیک در یک مودال باز می‌شود.",
+    description:
+      "عنوان و توضیح با اسکرول ظاهر می‌شوند، کارت‌ها پشت‌سرهم وارد می‌شوند و با هاور عنوان و توضیح هر عکس دیده می‌شود. اندازه‌ی هر کارت با کلاس‌های span تیلویند در هر آیتم تعیین می‌شود.",
+    tags: ["گالری", "بنتو", "framer-motion"],
+    file: "components/ui/bento-gallery.tsx",
+    extraFiles: [],
+    dependencies: ["framer-motion", "lucide-react"],
+    usage: `import InteractiveImageBentoGallery from "@/components/ui/bento-gallery";
+
+const imageItems = [
+  { id: 1, title: "چشم‌انداز کوهستان", desc: "آرامشی بالاتر از ابرها.", url: "/images/1.jpg", span: "md:col-span-2 md:row-span-2" },
+  { id: 2, title: "طاق ساحلی", desc: "جایی که خشکی به دریا می‌رسد.", url: "/images/2.jpg", span: "md:row-span-1" },
+];
+
+export default function Example() {
+  return (
+    <InteractiveImageBentoGallery
+      imageItems={imageItems}
+      title="لحظه‌های برگزیده"
+      description="برای گشتن بکشید، برای بزرگ‌نمایی کلیک کنید."
+    />
+  );
+}`,
+    props: [
+      { name: "imageItems", type: "ImageItem[]", description: "کارت‌های گالری به ترتیب." },
+      { name: "title", type: "string", description: "عنوان بالای گالری." },
+      { name: "description", type: "string", description: "متن زیر عنوان." },
+    ],
+    types: [
+      { name: "ImageItem", props: [
+        { name: "id", type: "number | string", description: "شناسه‌ی یکتا." },
+        { name: "title", type: "string", description: "عنوان روی کارت و alt تصویر." },
+        { name: "desc", type: "string", description: "توضیح کوتاه که با هاور دیده می‌شود." },
+        { name: "url", type: "string", description: "آدرس تصویر." },
+        { name: "span", type: "string", description: "کلاس‌های span تیلویند، مثل md:col-span-2." },
+      ] },
+    ],
+    notes: [
+      "تصاویر با تگ img ساده نمایش داده می‌شوند، پس برای هاست‌های بیرونی نیازی به تنظیم next.config نیست.",
+      "به lib/utils.ts (تابع cn) نیاز دارد. مسیر کشیدن همیشه چپ‌به‌راست است تا محاسبه‌ی محدوده‌ی drag درست بماند، اما متن‌ها راست‌به‌چپ‌اند.",
+      "متن‌ها فارسی و راست‌به‌چپ‌اند و فونت به‌صورت پیش‌فرض Vazirmatn (با جایگزین Tahoma) است؛ اگر فونت را در layout بارگذاری نمی‌کنید، متغیر --font-vazirmatn را تعریف کنید.",
+    ],
+  },
+  {
     slug: "card-image-carousel",
     promptFile: "card-image-carousel.md",
     name: "Tilt Cascade Carousel",
@@ -603,6 +651,183 @@ export default function Example() {
     notes: [
       "عکس‌ها با CSS mask رسم می‌شوند؛ اگر از دامنه‌ی دیگری می‌آیند آن دامنه باید هدر CORS بدهد. ساده‌ترین راه، گذاشتن عکس‌ها در پوشه‌ی public است.",
       "کلاس‌های animate-in از tw-animate-css می‌آیند.",
+    ],
+  },
+  {
+    slug: "scroll-morth-hero",
+    promptFile: "scroll-morth-hero.md",
+    name: "Scroll Morph Hero",
+    nameFa: "هیروی تغییرشکل با اسکرول",
+    summary: "کارت‌های تصویر که از حالت پخش‌شده به خط، دایره و در نهایت قوس تبدیل می‌شوند و با اسکرول می‌چرخند.",
+    description:
+      "معرفی انیمیشنی که کارت‌ها ابتدا پراکنده‌اند، سپس در یک دایره جمع می‌شوند و با اسکرول مجازی (wheel/touch) به قوس پایین صفحه تبدیل می‌شوند. هر کارت با هاور برمی‌گردد و پشت آن دیده می‌شود.",
+    tags: ["هیرو", "اسکرول", "سه‌بعدی"],
+    file: "components/ui/scroll-morph-hero.tsx",
+    extraFiles: [],
+    dependencies: ["framer-motion"],
+    usage: `import IntroAnimation from "@/components/ui/scroll-morph-hero";
+
+export default function Page() {
+  return (
+    <div className="w-full h-[800px] border rounded-lg overflow-hidden relative">
+      <IntroAnimation />
+    </div>
+  );
+}`,
+    props: [
+
+    ],
+    notes: [
+      "کامپوننت پراپ ندارد؛ تصاویر و متن‌ها داخل فایل تعریف شده‌اند (آرایه‌ی IMAGES و تعداد TOTAL_IMAGES) و برای شخصی‌سازی باید همان‌جا عوض شوند.",
+      "کامپوننت ۱۰۰٪ ارتفاع و عرض والدش را پر می‌کند، پس والد باید ارتفاع مشخص داشته باشد. اسکرول مجازی است و اسکرول صفحه را نمی‌گیرد.",
+      "تصاویر با تگ img ساده نمایش داده می‌شوند و نیازی به تنظیم next.config نیست.",
+      "متن‌ها فارسی و راست‌به‌چپ‌اند و فونت به‌صورت پیش‌فرض Vazirmatn (با جایگزین Tahoma) است؛ اگر فونت را در layout بارگذاری نمی‌کنید، متغیر --font-vazirmatn را تعریف کنید.",
+    ],
+  },
+  {
+    slug: "sushi-menu",
+    promptFile: "sushi-menu.md",
+    name: "Sushi Conveyor Menu",
+    nameFa: "منوی نوار گردان سوشی",
+    summary: "نوار گردان سه‌بعدی از بشقاب‌ها که می‌چرخد، با موس متوقف می‌شود و با کلیک جزئیات هر غذا را در دیالوگ نشان می‌دهد.",
+    description:
+      "منوی رستوران به شکل کایتن‌زوشی. با کشیدن نوار می‌چرخد، با autoplay بشقاب‌ها را یکی‌یکی جلو می‌آورد و هر بشقاب یک دیالوگ با توضیح، چیپ جزئیات و دکمه‌ی افزودن به سفارش دارد.",
+    tags: ["منو", "رستوران", "سه‌بعدی"],
+    file: "components/ui/sushi-conveyor-menu.tsx",
+    extraFiles: [],
+    dependencies: [],
+    usage: `import SushiConveyorMenu from "@/components/ui/sushi-conveyor-menu";
+import type { ConveyorDish } from "@/components/ui/sushi-conveyor-menu";
+
+const dishes: ConveyorDish[] = [
+  { id: "salmon", name: "نیگیری سالمون", price: "۴٫۲۰ دلار", tier: 2, description: "دو تکه سالمون تازه روی برنج.", details: ["۲ تکه", "ماهی"], image: "/images/salmon.webp" },
+  { id: "tuna", name: "نیگیری ماهی تن", price: "۶٫۸۰ دلار", tier: 4, image: "/images/tuna.webp" },
+];
+
+export default function Example() {
+  return (
+    <SushiConveyorMenu
+      items={dishes}
+      heading="نوار سوشی که همیشه می‌چرخد"
+      caption="یک بشقاب را برای سفارش انتخاب کنید."
+      autoplay
+      onAdd={(dish) => console.log(dish.id)}
+    />
+  );
+}`,
+    props: [
+      { name: "items", type: "ConveyorDish[]", description: "بشقاب‌های نوار؛ ۸ تا ۱۲ مورد بهترین نتیجه را دارد." },
+      { name: "eyebrow", type: "string", description: "خط کوچک بالای عنوان." },
+      { name: "heading", type: "string", description: "عنوان اصلی؛ aria-label بخش هم هست." },
+      { name: "caption", type: "string", description: "متن زیر نوار وقتی بشقابی انتخاب نشده." },
+      { name: "action", type: "ReactNode", description: "دکمه یا لینک زیر کپشن." },
+      { name: "speed", type: "number", default: "26", description: "سرعت نوار بر حسب px/s." },
+      { name: "paused", type: "boolean", description: "توقف نوار (کنترل‌شده)." },
+      { name: "onPausedChange", type: "(paused: boolean) => void", description: "تغییر وضعیت توقف." },
+      { name: "autoplay", type: "boolean", default: "false", description: "جلو آوردن خودکار بشقاب‌ها تا زمان تعامل کاربر." },
+      { name: "interval", type: "number", default: "3000", description: "فاصله‌ی بشقاب‌ها در autoplay به میلی‌ثانیه." },
+      { name: "active", type: "number | null", description: "اندیس بشقاب بالاآمده (کنترل‌شده)." },
+      { name: "onActiveChange", type: "(index: number | null) => void", description: "تغییر بشقاب فعال." },
+      { name: "onOpenChange", type: "(index: number | null) => void", description: "باز و بسته شدن دیالوگ." },
+      { name: "onAdd", type: "(item: ConveyorDish) => void", description: "کلیک دکمه‌ی «افزودن به سفارش»." },
+      { name: "legend", type: "{ [tier: number]: string }", description: "قیمت هر ردیف برای راهنما؛ در غیر این صورت از آیتم‌ها گرفته می‌شود." },
+      { name: "labels", type: "SushiConveyorMenuLabels", default: "فارسی", description: "برچسب‌های دسترس‌پذیری و دکمه‌ها." },
+    ],
+    types: [
+      { name: "ConveyorDish", props: [
+        { name: "id", type: "string", description: "شناسه‌ی یکتا." },
+        { name: "name", type: "string", description: "نام غذا." },
+        { name: "price", type: "string", description: "قیمت به‌صورت متن." },
+        { name: "tier", type: "1 | 2 | 3 | 4 | 5", description: "رنگ حلقه‌ی بشقاب." },
+        { name: "description", type: "string", description: "توضیح در کپشن و دیالوگ." },
+        { name: "details", type: "string[]", description: "چیپ‌های دیالوگ." },
+        { name: "image", type: "string", description: "عکس بشقاب از بالا با پس‌زمینه‌ی شفاف." },
+      ] },
+      { name: "SushiConveyorMenuLabels", props: [
+        { name: "add", type: "string", description: "متن دکمه‌ی افزودن." },
+        { name: "close", type: "string", description: "متن دکمه‌ی بستن." },
+        { name: "previous", type: "string", description: "برچسب دکمه‌ی قبلی." },
+        { name: "next", type: "string", description: "برچسب دکمه‌ی بعدی." },
+        { name: "pause", type: "string", description: "برچسب دکمه‌ی توقف." },
+      ] },
+    ],
+    notes: [
+      "از متغیرهای رنگ تم shadcn مثل --color-chart-1 تا --color-chart-5 استفاده می‌کند.",
+      "هندسه‌ی نوار چپ‌به‌راست محاسبه می‌شود؛ فقط دیالوگ و متن‌ها راست‌به‌چپ‌اند.",
+      "تصاویر با تگ img ساده نمایش داده می‌شوند و نیازی به تنظیم next.config نیست.",
+      "متن‌ها فارسی و راست‌به‌چپ‌اند و فونت به‌صورت پیش‌فرض Vazirmatn (با جایگزین Tahoma) است؛ اگر فونت را در layout بارگذاری نمی‌کنید، متغیر --font-vazirmatn را تعریف کنید.",
+    ],
+  },
+  {
+    slug: "team-rail",
+    promptFile: "team-rail.md",
+    name: "Team Lanyard Rail",
+    nameFa: "ریل کارت‌های تیم",
+    summary: "دیوار تیم با کارت‌های آویزان از ریل که با حرکت موس تاب می‌خورند و با کلیک می‌چرخند و پشتشان را نشان می‌دهند.",
+    description:
+      "هر عضو تیم یک کارت شناسایی با بند آویز است. با کشیدن روی ریل کارت‌ها جابه‌جا می‌شوند، کارت انتخاب‌شده به جلو می‌آید و با کلیک برمی‌گردد تا بیو، تگ‌ها و لینک‌ها دیده شوند. در موبایل به کاروسل با نقطه تبدیل می‌شود.",
+    tags: ["تیم", "کارت", "فیزیک"],
+    file: "components/ui/team-lanyard-rail.tsx",
+    extraFiles: [],
+    dependencies: [],
+    usage: `import TeamLanyardRail from "@/components/ui/team-lanyard-rail";
+import type { LanyardMember } from "@/components/ui/team-lanyard-rail";
+
+const team: LanyardMember[] = [
+  {
+    id: "ada",
+    name: "آدا لیندکویست",
+    role: "مدیر طراحی",
+    team: "اکمی · طراحی",
+    tone: 1,
+    image: "/images/ada.jpg",
+    bio: "ایده‌های مبهم را به رابط‌های آرام تبدیل می‌کند.",
+    tags: ["سیستم طراحی"],
+    links: [{ label: "ایمیل", href: "mailto:ada@example.com" }],
+  },
+];
+
+export default function Example() {
+  return <TeamLanyardRail items={team} heading="با تیم آشنا شوید" autoplay />;
+}`,
+    props: [
+      { name: "items", type: "LanyardMember[]", description: "اعضای تیم." },
+      { name: "eyebrow", type: "string", description: "خط کوچک بالای عنوان." },
+      { name: "heading", type: "string", description: "عنوان اصلی." },
+      { name: "caption", type: "string", description: "متن زیر ریل وقتی کسی انتخاب نشده." },
+      { name: "action", type: "ReactNode", description: "دکمه یا لینک زیر کپشن." },
+      { name: "autoplay", type: "boolean", default: "false", description: "چرخاندن خودکار کارت‌ها تا زمان تعامل کاربر." },
+      { name: "interval", type: "number", default: "2800", description: "مدت نمایش پشت کارت در autoplay به میلی‌ثانیه." },
+      { name: "active", type: "number | null", description: "کارت رو به جلو (کنترل‌شده)." },
+      { name: "onActiveChange", type: "(index: number | null) => void", description: "تغییر کارت فعال." },
+      { name: "flipped", type: "number | null", description: "کارت برگشته (کنترل‌شده)." },
+      { name: "onFlippedChange", type: "(index: number | null) => void", description: "تغییر کارت برگشته." },
+      { name: "labels", type: "TeamLanyardRailLabels", default: "فارسی", description: "راهنماهای زیر نام و برچسب نقطه‌ها." },
+    ],
+    types: [
+      { name: "LanyardMember", props: [
+        { name: "id", type: "string", description: "شناسه‌ی یکتا." },
+        { name: "name", type: "string", description: "نام روی هر دو سمت کارت." },
+        { name: "role", type: "string", description: "سمت شغلی." },
+        { name: "team", type: "string", description: "خط شرکت یا تیم." },
+        { name: "image", type: "string", description: "عکس پرتره؛ مربع بهتر است." },
+        { name: "bio", type: "string", description: "متن پشت کارت." },
+        { name: "tags", type: "string[]", description: "تا ۳ چیپ پشت کارت." },
+        { name: "links", type: "LanyardLink[]", description: "تا ۳ لینک پشت کارت، هر کدام { label, href }." },
+        { name: "tone", type: "1 | 2 | 3 | 4 | 5", description: "رنگ نوار کارت از توکن chart." },
+        { name: "drop", type: "number", description: "طول اضافه‌ی بند به پیکسل." },
+      ] },
+      { name: "TeamLanyardRailLabels", props: [
+        { name: "flip", type: "string", description: "راهنما وقتی کارت رو به جلوست." },
+        { name: "back", type: "string", description: "راهنما وقتی پشت کارت دیده می‌شود." },
+        { name: "show", type: "string", description: "پیشوند برچسب نقطه‌های کاروسل." },
+      ] },
+    ],
+    notes: [
+      "از متغیرهای رنگ تم shadcn مثل --color-chart-1 تا --color-chart-5 استفاده می‌کند.",
+      "هندسه‌ی ریل چپ‌به‌راست محاسبه می‌شود؛ پشت کارت و متن‌ها راست‌به‌چپ‌اند. آیکون لینک ایمیل با برچسب‌های شامل «ایمیل» یا mail تشخیص داده می‌شود.",
+      "تصاویر با تگ img ساده نمایش داده می‌شوند و نیازی به تنظیم next.config نیست.",
+      "متن‌ها فارسی و راست‌به‌چپ‌اند و فونت به‌صورت پیش‌فرض Vazirmatn (با جایگزین Tahoma) است؛ اگر فونت را در layout بارگذاری نمی‌کنید، متغیر --font-vazirmatn را تعریف کنید.",
     ],
   },
   {

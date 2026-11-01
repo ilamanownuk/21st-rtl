@@ -8,6 +8,7 @@ import type { ComponentType } from "react";
 const DEMOS: Record<string, ComponentType> = {
   "agentic-factory": dynamic(() => import("@/components/demos/agentic-factory"), { ssr: false }),
   "bank-card": dynamic(() => import("@/components/demos/bank-card"), { ssr: false }),
+  "bento-gallery": dynamic(() => import("@/components/demos/bento-gallery"), { ssr: false }),
   "card-image-carousel": dynamic(() => import("@/components/demos/card-image-carousel"), { ssr: false }),
   "carousel-of-cards-flex-col": dynamic(() => import("@/components/demos/carousel-of-cards-flex-col"), { ssr: false }),
   "circular-navigation-menu": dynamic(() => import("@/components/demos/circular-navigation-menu"), { ssr: false }),
@@ -16,6 +17,9 @@ const DEMOS: Record<string, ComponentType> = {
   "panoramid-spread-hero": dynamic(() => import("@/components/demos/panoramid-spread-hero"), { ssr: false }),
   "polaroid-image-carousel": dynamic(() => import("@/components/demos/polaroid-image-carousel"), { ssr: false }),
   "product-rail-gallery-fashion-store": dynamic(() => import("@/components/demos/product-rail-gallery-fashion-store"), { ssr: false }),
+  "scroll-morth-hero": dynamic(() => import("@/components/demos/scroll-morth-hero"), { ssr: false }),
+  "sushi-menu": dynamic(() => import("@/components/demos/sushi-menu"), { ssr: false }),
+  "team-rail": dynamic(() => import("@/components/demos/team-rail"), { ssr: false }),
   "tilted-grid-hero": dynamic(() => import("@/components/demos/tilted-grid-hero"), { ssr: false }),
   "wallet-card": dynamic(() => import("@/components/demos/wallet-card"), { ssr: false }),
 };
