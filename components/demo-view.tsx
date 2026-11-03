@@ -6,12 +6,16 @@ import type { ComponentType } from "react";
 // Demos render client-only: several read window/WebGL/matchMedia on mount and
 // they only ever run inside the preview iframe.
 const DEMOS: Record<string, ComponentType> = {
+  "3d-carousel": dynamic(() => import("@/components/demos/3d-carousel"), { ssr: false }),
   "agentic-factory": dynamic(() => import("@/components/demos/agentic-factory"), { ssr: false }),
   "bank-card": dynamic(() => import("@/components/demos/bank-card"), { ssr: false }),
   "bento-gallery": dynamic(() => import("@/components/demos/bento-gallery"), { ssr: false }),
+  "card-deck-carousel": dynamic(() => import("@/components/demos/card-deck-carousel"), { ssr: false }),
   "card-image-carousel": dynamic(() => import("@/components/demos/card-image-carousel"), { ssr: false }),
+  "card-stack-slider": dynamic(() => import("@/components/demos/card-stack-slider"), { ssr: false }),
   "carousel-of-cards-flex-col": dynamic(() => import("@/components/demos/carousel-of-cards-flex-col"), { ssr: false }),
   "circular-navigation-menu": dynamic(() => import("@/components/demos/circular-navigation-menu"), { ssr: false }),
+  "fisometric-lift-carousel": dynamic(() => import("@/components/demos/fisometric-lift-carousel"), { ssr: false }),
   "glassmorphism-folder": dynamic(() => import("@/components/demos/glassmorphism-folder"), { ssr: false }),
   "image-upload-cropper": dynamic(() => import("@/components/demos/image-upload-cropper"), { ssr: false }),
   "panoramid-spread-hero": dynamic(() => import("@/components/demos/panoramid-spread-hero"), { ssr: false }),

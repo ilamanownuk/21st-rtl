@@ -32,6 +32,35 @@ export type ComponentDoc = {
 
 export const COMPONENTS: ComponentDoc[] = [
   {
+    slug: "3d-carousel",
+    promptFile: "3d-carousel.md",
+    name: "3D Photo Carousel",
+    nameFa: "کاروسل سه‌بعدی عکس",
+    summary: "استوانه‌ی سه‌بعدی از عکس‌ها که با کشیدن می‌چرخد و با کلیک روی هر عکس، آن را بزرگ نشان می‌دهد.",
+    description:
+      "عکس‌ها دور یک استوانه‌ی سه‌بعدی چیده شده‌اند و با کشیدن افقی (با اینرسی فنری) می‌چرخند. کلیک روی هر عکس آن را با انیمیشن مشترک framer-motion در یک لایه‌ی بزرگ باز می‌کند و کلیک دوباره می‌بندد. در موبایل استوانه کوچک‌تر می‌شود.",
+    tags: ["سه‌بعدی", "کاروسل", "گالری"],
+    file: "components/ui/3d-carousel.tsx",
+    extraFiles: [],
+    dependencies: ["framer-motion"],
+    usage: `import { ThreeDPhotoCarousel } from "@/components/ui/3d-carousel";
+
+export default function Page() {
+  return (
+    <div className="w-full max-w-4xl">
+      <ThreeDPhotoCarousel />
+    </div>
+  );
+}`,
+    props: [],
+    notes: [
+      "کامپوننت ThreeDPhotoCarousel پراپ ندارد؛ فهرست عکس‌ها از آرایه‌ی keywords (آدرس picsum.photos) ساخته می‌شود و برای شخصی‌سازی باید همان‌جا عوض شود.",
+      "هوک useMediaQuery هم از همین فایل export می‌شود.",
+      "تصاویر با تگ img ساده نمایش داده می‌شوند و نیازی به تنظیم next.config نیست.",
+      "هندسه‌ی استوانه همیشه چپ‌به‌راست کار می‌کند و تغییر جهت راست‌به‌چپ تأثیری روی آن ندارد؛ کامپوننت متنی ندارد و به فونت وابسته نیست.",
+    ],
+  },
+  {
     slug: "agentic-factory",
     promptFile: "agentic-factory.md",
     name: "Agentic Factory 3D",
@@ -179,6 +208,63 @@ export default function Example() {
     ],
   },
   {
+    slug: "card-deck-carousel",
+    promptFile: "card-deck-carousel.md",
+    name: "Card Deck Carousel",
+    nameFa: "کاروسل دسته‌کارت",
+    summary: "دسته‌ای از کارت‌های عکس که با کشیدن یا ضربه پرتاب می‌شوند و زیر دسته برمی‌گردند.",
+    description:
+      "کارت‌ها مثل یک دسته ورق روی هم قرار دارند؛ کارت رو را می‌کشید تا پرتاب شود و زیر دسته برود. دکمه‌ها، کلیدهای جهت‌دار و autoplay هم پشتیبانی می‌شود. اگر برای اسلایدی عکس نباشد، یک منظره‌ی نقاشی‌شده با canvas ساخته می‌شود.",
+    tags: ["کاروسل", "کارت", "گالری"],
+    file: "components/ui/card-deck-carousel.tsx",
+    extraFiles: [],
+    dependencies: [],
+    usage: `import CardDeckCarousel from "@/components/ui/card-deck-carousel";
+
+export default function Page() {
+  return (
+    <CardDeckCarousel
+      aspect="3 / 4"
+      scatter={9}
+      slides={[
+        { image: "/photos/a.jpg", title: "بالای ابرها", caption: "طلوع در ارتفاع ۳۱۰۰ متری." },
+        { image: "/photos/b.jpg", title: "دریاچه‌ی شیشه‌ای" },
+      ]}
+    />
+  );
+}`,
+    props: [
+      { name: "slides", type: "Slide[]", description: "اسلایدها؛ بدون مقدار، اسلایدهای پیش‌فرض (منظره‌های نقاشی‌شده) نمایش داده می‌شود." },
+      { name: "height", type: "number | string", default: "'100svh'", description: "ارتفاع کادر؛ هر طول CSS." },
+      { name: "cardWidth", type: "string", default: "'min(78vw, 440px)'", description: "عرض هر کارت." },
+      { name: "aspect", type: "string", default: "'4 / 5'", description: "نسبت ابعاد کارت (aspect-ratio)." },
+      { name: "scatter", type: "number", default: "6", description: "بیشترین زاویه‌ی کج‌شدن کارت‌های پشت دسته، به درجه." },
+      { name: "autoplay", type: "number", default: "4200", description: "میلی‌ثانیه برای هر کارت؛ ۰ یعنی خاموش. هنگام تعامل کاربر متوقف می‌شود." },
+      { name: "background", type: "string", default: "var(--color-background)", description: "پس‌زمینه." },
+      { name: "ink", type: "string", default: "var(--color-foreground)", description: "رنگ متن و دکمه‌ها." },
+      { name: "onChange", type: "(index: number) => void", description: "با عوض شدن کارت رو صدا زده می‌شود." },
+      { name: "className", type: "string", description: "کلاس اضافه برای ریشه." },
+      { name: "style", type: "React.CSSProperties", description: "استایل اضافه برای ریشه." },
+      { name: "ariaLabel", type: "string", default: "'کاروسل تصاویر'", description: "برچسب دسترس‌پذیری ناحیه." },
+    ],
+    types: [
+      { name: "Slide", props: [
+        { name: "image", type: "string", description: "آدرس تصویر؛ بدون آن منظره‌ی نقاشی‌شده ساخته می‌شود." },
+        { name: "title", type: "string", description: "عنوان زیر کارت." },
+        { name: "caption", type: "string", description: "زیرنویس." },
+        { name: "alt", type: "string", description: "متن جایگزین تصویر." },
+        { name: "palette", type: "LandPalette", description: "پالت منظره‌ی نقاشی‌شده وقتی image خالی است." },
+        { name: "seed", type: "number", description: "بذر تصادفی منظره‌ی نقاشی‌شده." },
+      ] },
+    ],
+    notes: [
+      "تصاویر با تگ img ساده نمایش داده می‌شوند و نیازی به تنظیم next.config نیست.",
+      "هندسه‌ی کارت‌ها و جهت پرتاب چپ‌به‌راست است (ریشه dir=\"ltr\" دارد)؛ فقط متن عنوان و زیرنویس فارسی است.",
+      "متن‌ها فارسی‌اند و فونت به‌صورت پیش‌فرض Vazirmatn (با جایگزین Tahoma) است؛ وزیرمتن را در layout بارگذاری کنید (در Next.js با next/font/google).",
+      "در حالت prefers-reduced-motion کج‌شدن کارت‌های پشتی کم می‌شود.",
+    ],
+  },
+  {
     slug: "card-image-carousel",
     promptFile: "card-image-carousel.md",
     name: "Tilt Cascade Carousel",
@@ -244,6 +330,73 @@ export default function Example() {
       },
     ],
     notes: ["والد کامپوننت باید عرض داشته باشد (مثلاً w-full)؛ در غیر این صورت در یک flex جمع می‌شود.", "شمارنده و برچسب‌های دسترس‌پذیری با ارقام فارسی نوشته می‌شوند."],
+  },
+  {
+    slug: "card-stack-slider",
+    promptFile: "card-stack-slider.md",
+    name: "Card Stack Slider",
+    nameFa: "اسلایدر کارت‌های بادبزنی",
+    summary: "کارت‌ها به شکل بادبزن سه‌بعدی چیده می‌شوند؛ با کلیک، کشیدن یا autoplay کارت فعال عوض می‌شود.",
+    description:
+      "کارت فعال وسط و کمی بالا می‌آید و کارت‌های دو طرف با زاویه، عمق و همپوشانی قابل تنظیم پشت آن قرار می‌گیرند. با فنر framer-motion جابه‌جا می‌شود، با نقطه‌ها قابل هدایت است و اگر href داشته باشد لینک کارت فعال کنار نقطه‌ها دیده می‌شود. renderCard برای کارت دلخواه دارد.",
+    tags: ["کاروسل", "کارت", "سه‌بعدی"],
+    file: "components/ui/card-stack.tsx",
+    extraFiles: ["lib/utils.ts"],
+    dependencies: ["framer-motion", "lucide-react", "clsx", "tailwind-merge"],
+    usage: `import { CardStack, type CardStackItem } from "@/components/ui/card-stack";
+
+const items: CardStackItem[] = [
+  { id: 1, title: "عملکرد لوکس", description: "هیجان مهندسی دقیق", imageSrc: "/cars/1.jpg", href: "https://example.com" },
+  { id: 2, title: "طراحی برازنده", imageSrc: "/cars/2.jpg" },
+];
+
+export default function Page() {
+  return (
+    <CardStack items={items} autoAdvance intervalMs={2000} pauseOnHover showDots />
+  );
+}`,
+    props: [
+      { name: "items", type: "T[] (T extends CardStackItem)", required: true, description: "کارت‌ها." },
+      { name: "initialIndex", type: "number", default: "0", description: "اندیس کارت فعال در شروع." },
+      { name: "maxVisible", type: "number", default: "7", description: "تعداد کارت‌های دیده‌شده دور کارت فعال (فرد توصیه می‌شود)." },
+      { name: "cardWidth", type: "number", default: "520", description: "عرض کارت به پیکسل." },
+      { name: "cardHeight", type: "number", default: "320", description: "ارتفاع کارت به پیکسل." },
+      { name: "overlap", type: "number", default: "0.48", description: "همپوشانی کارت‌ها، از ۰ تا ۰٫۸." },
+      { name: "spreadDeg", type: "number", default: "48", description: "زاویه‌ی کل بادبزن به درجه." },
+      { name: "perspectivePx", type: "number", default: "1100", description: "پرسپکتیو سه‌بعدی." },
+      { name: "depthPx", type: "number", default: "140", description: "عمق بین کارت‌ها." },
+      { name: "tiltXDeg", type: "number", default: "12", description: "شیب حول محور X." },
+      { name: "activeLiftPx", type: "number", default: "22", description: "بالا آمدن کارت فعال." },
+      { name: "activeScale", type: "number", default: "1.03", description: "مقیاس کارت فعال." },
+      { name: "inactiveScale", type: "number", default: "0.94", description: "مقیاس کارت‌های غیرفعال." },
+      { name: "springStiffness", type: "number", default: "280", description: "سختی فنر." },
+      { name: "springDamping", type: "number", default: "28", description: "میرایی فنر." },
+      { name: "loop", type: "boolean", default: "true", description: "چرخش بی‌پایان." },
+      { name: "autoAdvance", type: "boolean", default: "false", description: "جلو رفتن خودکار." },
+      { name: "intervalMs", type: "number", default: "2800", description: "فاصله‌ی autoplay به میلی‌ثانیه." },
+      { name: "pauseOnHover", type: "boolean", default: "true", description: "توقف autoplay با هاور." },
+      { name: "showDots", type: "boolean", default: "true", description: "نمایش نقاط ناوبری." },
+      { name: "className", type: "string", description: "کلاس اضافه برای ریشه." },
+      { name: "onChangeIndex", type: "(index: number, item: T) => void", description: "با عوض شدن کارت فعال صدا زده می‌شود." },
+      { name: "renderCard", type: "(item: T, state: { active: boolean }) => ReactNode", description: "رندر دلخواه کارت به‌جای کارت پیش‌فرض." },
+    ],
+    types: [
+      { name: "CardStackItem", props: [
+        { name: "id", type: "string | number", required: true, description: "شناسه‌ی یکتا." },
+        { name: "title", type: "string", required: true, description: "عنوان کارت." },
+        { name: "description", type: "string", description: "توضیح کوتاه." },
+        { name: "imageSrc", type: "string", description: "آدرس تصویر." },
+        { name: "href", type: "string", description: "لینک کارت؛ کنار نقطه‌ها نمایش داده می‌شود." },
+        { name: "ctaLabel", type: "string", description: "متن دکمه‌ی فراخوان." },
+        { name: "tag", type: "string", description: "برچسب کوچک روی کارت." },
+      ] },
+    ],
+    notes: [
+      "تصاویر با تگ img ساده نمایش داده می‌شوند و نیازی به تنظیم next.config نیست.",
+      "از cn در lib/utils و رنگ‌های تم shadcn (foreground و muted-foreground) استفاده می‌کند.",
+      "متن‌ها فارسی‌اند و فونت به‌صورت پیش‌فرض Vazirmatn (با جایگزین Tahoma) است؛ وزیرمتن را در layout بارگذاری کنید (در Next.js با next/font/google).",
+      "هندسه‌ی بادبزن چپ‌به‌راست است (ریشه dir=\"ltr\" دارد)؛ فقط متن‌ها فارسی‌اند.",
+    ],
   },
   {
     slug: "carousel-of-cards-flex-col",
@@ -372,6 +525,67 @@ export default function Example() {
       },
     ],
     notes: ["منو با position: fixed روی کل صفحه باز می‌شود و z-index بالایی دارد.", "آیتم‌ها از بالای دایره شروع می‌شوند و پادساعتگرد (راست‌به‌چپ) چیده می‌شوند."],
+  },
+  {
+    slug: "fisometric-lift-carousel",
+    promptFile: "fisometric-lift-carousel.md",
+    name: "Isometric Lift Carousel",
+    nameFa: "کاروسل ایزومتریک با بالا آمدن کارت",
+    summary: "ردیف کارت‌های ایزومتریک که کارت انتخاب‌شده با حرکت فنری بالا می‌آید و بزرگ می‌شود.",
+    description:
+      "کارت‌ها در یک خط مایل سه‌بعدی چیده می‌شوند؛ کارت انتخاب‌شده بالا می‌آید و عریض می‌شود. با کلیک، کشیدن، کلیدهای جهت‌دار، دکمه‌ها و نقاط قابل هدایت است و حرکت با فنر جاوااسکریپتی حل می‌شود. تنها وابستگی آن React است.",
+    tags: ["کاروسل", "ایزومتریک", "سه‌بعدی"],
+    file: "components/ui/isometric-lift-carousel.tsx",
+    extraFiles: [],
+    dependencies: [],
+    usage: `import IsometricLiftCarousel, { type IsometricLiftItem } from "@/components/ui/isometric-lift-carousel";
+
+const items: IsometricLiftItem[] = [
+  { title: "پیاده‌رو", src: "/photos/1.jpg" },
+  { title: "بام قرمز", src: "/photos/2.jpg" },
+];
+
+export default function Page() {
+  return <IsometricLiftCarousel items={items} height="560px" />;
+}`,
+    props: [
+      { name: "items", type: "IsometricLiftItem[]", required: true, description: "کارت‌ها." },
+      { name: "height", type: "string", description: "ارتفاع ریشه؛ باید طول مشخص CSS باشد." },
+      { name: "cardWidth", type: "string", description: "عرض کارت ایستاده." },
+      { name: "activeWidth", type: "string", description: "عرض کارت بالا آمده." },
+      { name: "lift", type: "number", description: "مقدار بالا آمدن کارت انتخاب‌شده به پیکسل." },
+      { name: "gap", type: "number", description: "فاصله‌ی کارت‌ها به پیکسل." },
+      { name: "tiltX", type: "number", description: "شیب کل ردیف به درجه." },
+      { name: "rotateY", type: "number", description: "چرخش حول محور Y به درجه." },
+      { name: "radius", type: "number", description: "گردی گوشه‌ی کارت به پیکسل." },
+      { name: "bounce", type: "number", description: "جهندگی فنر؛ از ۰ تا حدود ۰٫۵." },
+      { name: "duration", type: "number", description: "مدت تقریبی حرکت به ثانیه." },
+      { name: "titles", type: "boolean", description: "نمایش عنوان کارت انتخاب‌شده." },
+      { name: "controls", type: "boolean", description: "نمایش قرص قبلی/نقاط/بعدی." },
+      { name: "background", type: "string", description: "پس‌زمینه‌ی ریشه؛ هر رنگ یا گرادیان CSS." },
+      { name: "color", type: "string", description: "رنگ متن، نقاط و دکمه‌ها." },
+      { name: "fontFamily", type: "string", default: "var(--font-app), Vazirmatn, Tahoma", description: "فونت." },
+      { name: "fontHref", type: "string | null", default: "null", description: "آدرس stylesheet برای بارگذاری fontFamily." },
+      { name: "index", type: "number", description: "اندیس فعال (کنترل‌شده)." },
+      { name: "defaultIndex", type: "number", description: "اندیس اولیه (غیرکنترل‌شده)." },
+      { name: "onIndexChange", type: "(index: number) => void", description: "با تغییر کارت فعال صدا زده می‌شود." },
+      { name: "onSelect", type: "(item: IsometricLiftItem, index: number) => void", description: "کلیک روی کارت از قبل بالا آمده." },
+      { name: "ariaLabel", type: "string", default: "'کاروسل تصاویر'", description: "برچسب دسترس‌پذیری." },
+      { name: "className", type: "string", description: "کلاس اضافه برای ریشه." },
+    ],
+    types: [
+      { name: "IsometricLiftItem", props: [
+        { name: "title", type: "string", required: true, description: "عنوان کارت." },
+        { name: "src", type: "string", description: "آدرس تصویر؛ بدون آن کارت یک گرادیان ملایم است." },
+        { name: "alt", type: "string", description: "متن جایگزین؛ پیش‌فرض title." },
+      ] },
+    ],
+    notes: [
+      "تصاویر با تگ img ساده نمایش داده می‌شوند و نیازی به تنظیم next.config نیست.",
+      "هندسه‌ی ایزومتریک چپ‌به‌راست است (ریشه dir=\"ltr\" دارد)؛ فقط متن‌ها فارسی‌اند.",
+      "متن‌ها فارسی‌اند و فونت به‌صورت پیش‌فرض Vazirmatn (با جایگزین Tahoma) است؛ وزیرمتن را در layout بارگذاری کنید (در Next.js با next/font/google).",
+      "height باید یک طول مشخص باشد و در والد flex بهتر است کامپوننت داخل div با w-full قرار گیرد.",
+    ],
   },
   {
     slug: "glassmorphism-folder",

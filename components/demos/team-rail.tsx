@@ -106,7 +106,7 @@ export default function TeamLanyardRailDemo({ autoplay = true }: { autoplay?: bo
         action={
           <button type="button" className="inline-flex items-center gap-2 rounded-full bg-foreground px-5 py-2.5 text-sm font-medium text-background shadow-sm outline-none transition-[transform,box-shadow] hover:-translate-y-px hover:shadow-md focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background motion-reduce:transition-none">
             <span aria-hidden="true" className="size-1.5 rounded-full bg-chart-2" />
-            We&apos;re hiring
+            به ما بپیوندید
           </button>
         }
       />
